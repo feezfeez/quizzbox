@@ -6,6 +6,9 @@
 #ifndef __HALL_SENSOR_TASK_H
 #define __HALL_SENSOR_TASK_H
 
+#ifndef __BUZZER_TASK_H
+#define __BUZZER_TASK_H
+
 void create_buzzer_task();
 
 #define BLINK_PERIOD        50 // *10ms = 500ms per state = 1s period
@@ -15,4 +18,4 @@ void create_buzzer_task();
 // Handle declaration
 TaskHandle_t buzzer_task_handle;
 
-#endif /* __HALL_SENSOR_TASK_H */
+#endif /* __BUZZER_TASK_H */
