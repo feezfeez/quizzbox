@@ -28,6 +28,7 @@
 #include "task.h"
 #include "queue.h"
 
+#include "fsm_task.h"
 #include "config.h"
 #include "task_config.h"
 #include "buzzer_task.h"
@@ -40,8 +41,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-xQueueHandle buzzer_id_queue;
+xQueueHandle buzzer_queue;
 xQueueHandle exti_queue;
+xQueueHandle fsm_queue;
 
 uint8_t wrong_ans = 0;
 uint8_t correct_ans = 0;
@@ -128,8 +130,9 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  buzzer_id_queue = xQueueCreate(BUZZ_ID_QUEUE_LEN, sizeof(uint16_t));
+  buzzer_queue = xQueueCreate(BUZZ_ID_QUEUE_LEN, sizeof(eSystemEvent));
   exti_queue = xQueueCreate(EXTI_QUEUE_LEN, sizeof(uint16_t));
+  fsm_queue = xQueueCreate(FSM_QUEUE_LEN, sizeof(eSystemEvent));
   /* USER CODE END RTOS_QUEUES */
 
 

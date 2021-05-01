@@ -20,11 +20,15 @@ typedef enum
 } eSystemState;
 
 // Different type events
-    typedef enum
-    {
-        Buzzer_Pressed_Event,
-        Correct_Answer_Event,
-        Wrong_Answer_Event
-    } eSystemEvent;
+typedef enum
+{
+    Start_Pressed_Event = 1,
+    Blue_Buzzer_Pressed_Event,
+    Red_Buzzer_Pressed_Event,
+    Yellow_Buzzer_Pressed_Event,
+    Green_Buzzer_Pressed_Event,
+    Correct_Answer_Event,
+    Wrong_Answer_Event
+} eSystemEvent;
 
 #endif /* __FSM_TASK_H */

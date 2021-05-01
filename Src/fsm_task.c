@@ -9,11 +9,15 @@
 #include "queue.h"
 
 #include "main.h"
+#include "fsm_task.h"
 #include "config.h"
 #include "task_config.h"
-#include "fsm_task.h"
+
+eSystemState eNextState = Idle_State;
 
 static void _fsm_task(void *pvParameters);
+
+static const uint32_t full_mask = BLUE_BUZZ_BP_Pin | RED_BUZZ_BP_Pin | YELLOW_BUZZ_BP_Pin | GREEN_BUZZ_BP_Pin;
 
 void create_fsm_task(void)
 {
@@ -23,85 +27,103 @@ void create_fsm_task(void)
 }
 
 //Prototype of eventhandlers
-eSystemState AmountDispatchHandler(void)
+eSystemState StartQuestionHandler(void)
+{
+    return Question_State;
+}
+
+eSystemState BuzzerPressedHandler(void)
+{
+    return Pending_Answer_State;
+}
+
+eSystemState CorrectAnswerHandler(void)
 {
     return Idle_State;
 }
-eSystemState EnterAmountHandler(void)
+
+eSystemState WrongAnswerHandler(uint32_t players_mask)
 {
-    return Amount_Entered_State;
+    if (players_mask == full_mask)
+    {
+        return Idle_State;
+    }
+    else
+    {
+        EXTI->IMR |= ~(players_mask) & (BLUE_BUZZ_BP_Pin | RED_BUZZ_BP_Pin | YELLOW_BUZZ_BP_Pin | GREEN_BUZZ_BP_Pin);
+        return Question_State;
+    }
 }
-eSystemState OptionSelectionHandler(void)
+
+eSystemState StartButtonHandler(void)
 {
-    return Option_Selected_State;
-}
-eSystemState EnterPinHandler(void)
-{
-    return Pin_Eentered_State;
-}
-eSystemState InsertCardHandler(void)
-{
-    return Card_Inserted_State;
+    return Idle_State;
 }
 
 static void _fsm_task (void *pvParameters)
 {
     // Init
-    eSystemState eNextState = Idle_State;
     eSystemEvent eNewEvent;
-
-    // XXX Period = 10ms?
-    portTickType period;
-    period = (portTickType)(10/portTICK_RATE_MS);
+    uint32_t players_mask = 0;
 
     for(;;)
     {
         //Read system Events
-        eSystemEvent eNewEvent = ReadEvent();
+        xQueueReceive(fsm_queue, &eNewEvent, portMAX_DELAY);
         switch(eNextState)
         {
-        case Idle_State:
-        {
-            if(Card_Insert_Event == eNewEvent)
-            {
-                eNextState = InsertCardHandler();
-            }
-        }
-        break;
-        case Card_Inserted_State:
-        {
-            if(Pin_Enter_Event == eNewEvent)
-            {
-                eNextState = EnterPinHandler();
-            }
-        }
-        break;
-        case Pin_Eentered_State:
-        {
-            if(Option_Selection_Event == eNewEvent)
-            {
-                eNextState = OptionSelectionHandler();
-            }
-        }
-        break;
-        case Option_Selected_State:
-        {
-            if(Amount_Enter_Event == eNewEvent)
-            {
-                eNextState = EnterAmountHandler();
-            }
-        }
-        break;
-        case Amount_Entered_State:
-        {
-            if(Amount_Dispatch_Event == eNewEvent)
-            {
-                eNextState = AmountDispatchHandler();
-            }
-        }
-        break;
-        default:
-            break;
+            case Idle_State:
+                players_mask = 0;
+                // Unmask all players
+                EXTI->IMR |= BLUE_BUZZ_BP_Pin | RED_BUZZ_BP_Pin | YELLOW_BUZZ_BP_Pin | GREEN_BUZZ_BP_Pin;
+                eNextState = StartQuestionHandler();
+                break;
+
+            case Question_State:
+                if (eNewEvent == Start_Pressed_Event)
+                {
+                    StartButtonHandler();
+                }
+                else if(eNewEvent == Blue_Buzzer_Pressed_Event)
+                {
+                    players_mask |= BLUE_BUZZ_BP_Pin;
+                    eNextState = BuzzerPressedHandler();
+                }
+                else if(eNewEvent == Red_Buzzer_Pressed_Event)
+                {
+                    players_mask |= RED_BUZZ_BP_Pin;
+                    eNextState = BuzzerPressedHandler();
+                }
+                else if(eNewEvent == Yellow_Buzzer_Pressed_Event)
+                {
+                    players_mask |= YELLOW_BUZZ_BP_Pin;
+                    eNextState = BuzzerPressedHandler();
+                }
+                else if(eNewEvent == Green_Buzzer_Pressed_Event)
+                {
+                    players_mask |= GREEN_BUZZ_BP_Pin;
+                    eNextState = BuzzerPressedHandler();
+                }
+
+                xQueueOverwrite(buzzer_queue, &eNewEvent);
+                break;
+
+            case Pending_Answer_State:
+
+                if(eNewEvent == Correct_Answer_Event)
+                {
+                    eNextState = CorrectAnswerHandler();
+                }
+                else if (eNewEvent == Wrong_Answer_Event)
+                {
+                    eNextState = WrongAnswerHandler(players_mask);
+                }
+
+                xQueueOverwrite(buzzer_queue, &eNewEvent);
+                break;
+
+            default:
+                break;
         }
     }
 }
