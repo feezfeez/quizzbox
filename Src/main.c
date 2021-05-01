@@ -136,6 +136,7 @@ int main(void)
   /* USER CODE BEGIN RTOS_THREADS */
   create_buzzer_task();
   create_handler_task();
+  create_fsm_task();
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */

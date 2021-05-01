@@ -15,5 +15,6 @@
 
 #define BUZZER_TASK_PRIORITY        (tskIDLE_PRIORITY + 1)
 #define HANDLER_TASK_PRIORITY       (tskIDLE_PRIORITY + 2)
+#define FSM_TASK_PRIORITY           (tskIDLE_PRIORITY + 3)
 
 #endif /* __TASK_CONFIG_H */
