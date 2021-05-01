@@ -3,9 +3,6 @@
   * @version 1.0
 */
 
-#ifndef __HALL_SENSOR_TASK_H
-#define __HALL_SENSOR_TASK_H
-
 #ifndef __BUZZER_TASK_H
 #define __BUZZER_TASK_H
 
