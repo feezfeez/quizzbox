@@ -12,6 +12,9 @@
 #define EXTI_QUEUE_LEN      3
 #define FSM_QUEUE_LEN       3
 
+#define SINGLE_ANSWER       5 // points
+#define DOUBLE_ANSWER       10 // points
+
 typedef struct
 {
     GPIO_TypeDef* buzz_led_port;

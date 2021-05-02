@@ -164,9 +164,19 @@ static void _fsm_task (void *pvParameters)
                 {
                     StartButtonHandler();
                 }
-                else if (eNewEvent == Correct_Answer_Event)
+                else if (eNewEvent == Correct_Answer_Single_Event)
                 {
+                    winner.player = player_ans.buzz_led_pin;
+                    winner.points = SINGLE_ANSWER;
                     eNextState = CorrectAnswerHandler();
+                    xQueueSend(display_queue, &winner, 0);
+                }
+                else if (eNewEvent == Correct_Answer_Double_Event)
+                {
+                    winner.player = player_ans.buzz_led_pin;
+                    winner.points = DOUBLE_ANSWER;
+                    eNextState = CorrectAnswerHandler();
+                    xQueueSend(display_queue, &winner, 0);
                 }
                 else if (eNewEvent == Wrong_Answer_Event)
                 {

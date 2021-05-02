@@ -62,7 +62,7 @@ static void _handler_task (void *pvParameters)
                 break;
 
             case OK_BUTTON_Pin:
-                EventToSend = Correct_Answer_Event;
+                EventToSend = Correct_Answer_Single_Event;
                 break;
 
             case KO_BUTTON_Pin:

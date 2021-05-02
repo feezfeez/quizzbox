@@ -35,7 +35,8 @@ typedef enum
     Red_Buzzer_Pressed_Event,
     Yellow_Buzzer_Pressed_Event,
     Green_Buzzer_Pressed_Event,
-    Correct_Answer_Event,
+    Correct_Answer_Single_Event,
+    Correct_Answer_Double_Event,
     Wrong_Answer_Event
 } eSystemEvent;
 
