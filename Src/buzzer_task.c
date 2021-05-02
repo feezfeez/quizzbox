@@ -28,7 +28,7 @@ static void _buzzer_task (void *pvParameters)
     // Init
     uint8_t i = 0;
     eSystemEvent buzzer_mgmt;
-    GPIO_TypeDef* buzz_led_port;
+    GPIO_TypeDef* buzz_led_port = 0;
     uint16_t buzz_led_pin = 0;
     uint8_t correct_cycles = MAX_TOGGL_CNT;
 
