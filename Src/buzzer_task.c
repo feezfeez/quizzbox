@@ -27,13 +27,12 @@ static void _buzzer_task (void *pvParameters)
 {
     // Init
     uint8_t i = 0;
-    uint8_t j = 0;
     eSystemEvent buzzer_mgmt;
     GPIO_TypeDef* buzz_led_port;
     uint16_t buzz_led_pin = 0;
-    uint8_t correct_cycle = MAX_TOGGL_CNT;
+    uint8_t correct_cycles = MAX_TOGGL_CNT;
 
-    // XXX Period = 10ms?
+    // Period = 10ms
     portTickType period;
     period = (portTickType)(10/portTICK_RATE_MS);
 
@@ -41,7 +40,7 @@ static void _buzzer_task (void *pvParameters)
     {
         // Init
         i = 0;
-        correct_cycle = MAX_TOGGL_CNT;
+        correct_cycles = MAX_TOGGL_CNT;
 
         // Block until a buzzer is pressed
         xQueueReceive(buzzer_queue, &buzzer_mgmt, portMAX_DELAY);
@@ -74,7 +73,7 @@ static void _buzzer_task (void *pvParameters)
                 portENTER_CRITICAL();
                 HAL_GPIO_TogglePin(buzz_led_port, buzz_led_pin);
                 portEXIT_CRITICAL();
-                i = BLINK_PERIOD;
+                i = PEND_ANS_PERIOD;
             }
             vTaskDelay(period);
             i--;
@@ -86,24 +85,24 @@ static void _buzzer_task (void *pvParameters)
             HAL_GPIO_WritePin(buzz_led_port, buzz_led_pin, GPIO_PIN_SET);
             portEXIT_CRITICAL();
 
-            for (j=0 ; j<MAX_TOGGL_LEN ; j++)
+            for (i=0 ; i<MAX_TOGGL_LEN ; i++)
                 vTaskDelay(period);
 
-            while (correct_cycle != 0)
+            while (correct_cycles != 0)
             {
                 portENTER_CRITICAL();
                 HAL_GPIO_TogglePin(buzz_led_port, buzz_led_pin);
                 portEXIT_CRITICAL();
-                for (j=0 ; j<MAX_TOGGL_LEN ; j++)
+                for (i=0 ; i<MAX_TOGGL_LEN ; i++)
                     vTaskDelay(period);
-                correct_cycle--;
+                correct_cycles--;
             }
         }
 
         else if (buzzer_mgmt == Wrong_Answer_Event)
         {
             // TODO Debounce à améliorer
-            for (j=0 ; j<50 ; j++)
+            for (i=0 ; i<50 ; i++)
                 vTaskDelay(period);
         }
 

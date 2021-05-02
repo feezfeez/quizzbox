@@ -8,7 +8,7 @@
 
 void create_buzzer_task();
 
-#define BLINK_PERIOD        50 // *10ms = 500ms per state = 1s period
+#define PEND_ANS_PERIOD     50 // *10ms = 500ms per state = 1s period
 #define MAX_TOGGL_CNT       6
 #define MAX_TOGGL_LEN       15 // *10ms
 
