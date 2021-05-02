@@ -34,5 +34,6 @@ extern eSystemState eNextState;
 extern xQueueHandle buzzer_queue;
 extern xQueueHandle exti_queue;
 extern xQueueHandle fsm_queue;
+extern xQueueHandle display_queue;
 
 #endif /* __CONFIG_H */

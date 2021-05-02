@@ -33,6 +33,7 @@
 #include "task_config.h"
 #include "buzzer_task.h"
 #include "handler_task.h"
+#include "display_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +45,7 @@
 xQueueHandle buzzer_queue;
 xQueueHandle exti_queue;
 xQueueHandle fsm_queue;
+xQueueHandle display_queue;
 
 /* USER CODE END PD */
 
@@ -131,6 +133,7 @@ int main(void)
   buzzer_queue = xQueueCreate(BUZZ_ID_QUEUE_LEN, sizeof(eSystemEvent));
   exti_queue = xQueueCreate(EXTI_QUEUE_LEN, sizeof(uint16_t));
   fsm_queue = xQueueCreate(FSM_QUEUE_LEN, sizeof(eSystemEvent));
+  display_queue = xQueueCreate(FSM_QUEUE_LEN, sizeof(winner_t));
   /* USER CODE END RTOS_QUEUES */
 
 
@@ -138,6 +141,7 @@ int main(void)
   create_buzzer_task();
   create_handler_task();
   create_fsm_task();
+  create_display_task();
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
