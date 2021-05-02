@@ -9,7 +9,10 @@
 void create_fsm_task();
 
 // Defines
-#define FINITE_BLOCKING_TIME    100
+#define INIT_TOGGL_CNT          4
+#define CORRECT_TOGGL_CNT       6
+
+#define FINITE_BLOCKING_TIME    1
 
 // Handle declaration
 TaskHandle_t fsm_task_handle;
@@ -20,6 +23,7 @@ typedef enum
     Idle_State,
     Question_State,
     Pending_Answer_State,
+    Correct_UI_State,
 } eSystemState;
 
 // Different type events

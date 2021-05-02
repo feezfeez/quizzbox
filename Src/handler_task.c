@@ -34,6 +34,9 @@ static void _handler_task (void *pvParameters)
         // Block until interrupt on external input occurs
         xQueueReceive(exti_queue, &exti_pin, portMAX_DELAY);
 
+        if (eNextState == Idle_State)
+            continue;
+
         EventToSend = 0;
 
         switch(exti_pin)

@@ -31,7 +31,6 @@ static void _buzzer_task (void *pvParameters)
     eSystemEvent buzzer_mgmt;
     GPIO_TypeDef* buzz_led_port = 0;
     uint16_t buzz_led_pin = 0;
-    uint8_t correct_cycles = MAX_TOGGL_CNT;
 
     // Period = 10ms
     portTickType period;
@@ -41,10 +40,13 @@ static void _buzzer_task (void *pvParameters)
     {
         // Init
         i = 0;
-        correct_cycles = MAX_TOGGL_CNT;
 
         // Block until a buzzer is pressed
         xQueueReceive(buzzer_queue, &buzzer_mgmt, portMAX_DELAY);
+
+        portENTER_CRITICAL();
+        set_reset_all_buzzleds(GPIO_PIN_SET);
+        portEXIT_CRITICAL();
 
         if (buzzer_mgmt == Blue_Buzzer_Pressed_Event)
         {
@@ -79,36 +81,5 @@ static void _buzzer_task (void *pvParameters)
             vTaskDelay(period);
             i--;
         }
-
-        if (buzzer_mgmt == Correct_Answer_Event)
-        {
-            portENTER_CRITICAL();
-            HAL_GPIO_WritePin(buzz_led_port, buzz_led_pin, GPIO_PIN_SET);
-            portEXIT_CRITICAL();
-
-            for (i=0 ; i<MAX_TOGGL_LEN ; i++)
-                vTaskDelay(period);
-
-            while (correct_cycles != 0)
-            {
-                portENTER_CRITICAL();
-                HAL_GPIO_TogglePin(buzz_led_port, buzz_led_pin);
-                portEXIT_CRITICAL();
-                for (i=0 ; i<MAX_TOGGL_LEN ; i++)
-                    vTaskDelay(period);
-                correct_cycles--;
-            }
-        }
-
-        else if (buzzer_mgmt == Wrong_Answer_Event)
-        {
-            // TODO Debounce à améliorer
-            for (i=0 ; i<50 ; i++)
-                vTaskDelay(period);
-        }
-
-        portENTER_CRITICAL();
-        HAL_GPIO_WritePin(buzz_led_port, buzz_led_pin, GPIO_PIN_SET);
-        portEXIT_CRITICAL();
     }
 }
