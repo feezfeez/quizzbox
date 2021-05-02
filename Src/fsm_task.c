@@ -60,6 +60,7 @@ eSystemState WrongAnswerHandler(uint32_t players_mask)
         mask_buzzleds(players_mask);
         portEXIT_CRITICAL();
 
+        // Unmask buzzers who haven't answered yet during the game
         EXTI->IMR |= ~(players_mask) & (BLUE_BUZZ_BP_Pin | RED_BUZZ_BP_Pin | YELLOW_BUZZ_BP_Pin | GREEN_BUZZ_BP_Pin);
         return Question_State;
     }
@@ -86,7 +87,7 @@ static void _fsm_task (void *pvParameters)
     {
         time_to_wait = portMAX_DELAY;
         if (eNextState == Idle_State)
-            time_to_wait = FINITE_BLOCKING_TIME;
+            time_to_wait = FINITE_BLOCKING_TIME; // Set to a finite number to exit Idle State without external event
 
         //Read system events
         xQueueReceive(fsm_queue, &eNewEvent, time_to_wait);
@@ -107,6 +108,7 @@ static void _fsm_task (void *pvParameters)
                 set_reset_all_buzzleds(GPIO_PIN_RESET);
                 portEXIT_CRITICAL();
 
+                // Blink all buzzers
                 blink_all_buzzleds(INIT_TOGGL_CNT, period);
 
                 // Reset Mask

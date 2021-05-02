@@ -44,10 +44,12 @@ static void _buzzer_task (void *pvParameters)
         // Block until a buzzer is pressed
         xQueueReceive(buzzer_queue, &buzzer_mgmt, portMAX_DELAY);
 
+        // Switch off all buzzers LED
         portENTER_CRITICAL();
         set_reset_all_buzzleds(GPIO_PIN_SET);
         portEXIT_CRITICAL();
 
+        // Extract buzzer information
         if (buzzer_mgmt == Blue_Buzzer_Pressed_Event)
         {
             buzz_led_port = BLUE_BUZZ_LED_GPIO_Port;
@@ -69,6 +71,7 @@ static void _buzzer_task (void *pvParameters)
             buzz_led_pin = GREEN_BUZZ_LED_Pin;
         }
 
+        // Blink until answer is approved (or not)
         while(eNextState == Pending_Answer_State)
         {
             if (i == 0)
