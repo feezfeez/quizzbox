@@ -162,7 +162,6 @@ static void _fsm_task (void *pvParameters)
                 if (eNewEvent == Correct_Answer_Event)
                 {
                     eNextState = CorrectAnswerHandler();
-                    xQueueOverwrite(buzzer_queue, &eNewEvent);
                 }
                 else if (eNewEvent == Wrong_Answer_Event)
                 {

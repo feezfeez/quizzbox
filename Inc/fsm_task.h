@@ -13,7 +13,7 @@ void create_fsm_task();
 #define CORRECT_TOGGL_CNT       6
 
 #define FINITE_BLOCKING_TIME    1
-#define KEEP_OFF_INIT           700 // ms
+#define KEEP_OFF_INIT           500 // ms
 
 // Handle declaration
 TaskHandle_t fsm_task_handle;
