@@ -19,6 +19,12 @@ typedef struct
     uint16_t score;
 }player_t;
 
+typedef struct
+{
+    uint16_t player;
+    uint8_t points;
+}winner_t;
+
 // Extern declarations
 extern eSystemState eNextState;
 

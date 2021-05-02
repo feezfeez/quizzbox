@@ -78,6 +78,7 @@ static void _fsm_task (void *pvParameters)
     TickType_t time_to_wait = FINITE_BLOCKING_TIME;
     uint32_t players_mask = 0;
     player_t player_ans;
+    winner_t winner = {};
 
     // Period = 10ms
     portTickType period;
