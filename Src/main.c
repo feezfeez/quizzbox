@@ -45,8 +45,6 @@ xQueueHandle buzzer_queue;
 xQueueHandle exti_queue;
 xQueueHandle fsm_queue;
 
-uint8_t wrong_ans = 0;
-uint8_t correct_ans = 0;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/

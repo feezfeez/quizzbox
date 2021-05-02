@@ -92,9 +92,6 @@ static void _buzzer_task (void *pvParameters)
                     vTaskDelay(period);
                 correct_cycle--;
             }
-
-            EXTI->IMR |= BLUE_BUZZ_BP_Pin | RED_BUZZ_BP_Pin | YELLOW_BUZZ_BP_Pin | GREEN_BUZZ_BP_Pin;
-            correct_ans = 0;
         }
 
         else if (buzzer_mgmt == Wrong_Answer_Event)

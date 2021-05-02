@@ -19,7 +19,4 @@ extern xQueueHandle buzzer_queue;
 extern xQueueHandle exti_queue;
 extern xQueueHandle fsm_queue;
 
-extern uint8_t wrong_ans;
-extern uint8_t correct_ans;
-
 #endif /* __CONFIG_H */
