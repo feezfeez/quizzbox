@@ -13,6 +13,7 @@
 #include "config.h"
 #include "buzzer_task.h"
 #include "task_config.h"
+#include "ui_tools.h"
 
 static void _buzzer_task(void *pvParameters);
 

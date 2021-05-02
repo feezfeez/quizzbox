@@ -12,6 +12,7 @@
 #include "fsm_task.h"
 #include "config.h"
 #include "task_config.h"
+#include "ui_tools.h"
 
 eSystemState eNextState = Idle_State;
 
