@@ -8,6 +8,9 @@
 
 void create_fsm_task();
 
+// Defines
+#define FINITE_BLOCKING_TIME    100
+
 // Handle declaration
 TaskHandle_t fsm_task_handle;
 

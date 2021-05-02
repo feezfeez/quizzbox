@@ -64,12 +64,19 @@ static void _fsm_task (void *pvParameters)
 {
     // Init
     eSystemEvent eNewEvent;
+    TickType_t time_to_wait = FINITE_BLOCKING_TIME;
     uint32_t players_mask = 0;
 
     for(;;)
     {
-        //Read system Events
-        xQueueReceive(fsm_queue, &eNewEvent, portMAX_DELAY);
+        if (eNextState == Idle_State)
+            time_to_wait = FINITE_BLOCKING_TIME;
+        else
+            time_to_wait = portMAX_DELAY;
+
+        //Read system events
+        xQueueReceive(fsm_queue, &eNewEvent, time_to_wait);
+
         switch(eNextState)
         {
             case Idle_State:
