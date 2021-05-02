@@ -75,7 +75,7 @@ void blink_all_buzzleds(uint8_t blink_cnt, portTickType period)
     }
 }
 
-void blink_single_buzzled(buzz_led_t buzzer_led, uint8_t blink_cnt, portTickType period)
+void blink_single_buzzled(player_t buzzer_led, uint8_t blink_cnt, portTickType period)
 {
     uint8_t i = 0;
     uint8_t state_timing = TOGGLE_TIMING;

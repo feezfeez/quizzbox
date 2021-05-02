@@ -13,6 +13,6 @@ void set_reset_all_buzzleds(GPIO_PinState set_reset);
 void toggle_all_buzzleds();
 void mask_buzzleds(uint32_t players_mask);
 void blink_all_buzzleds(uint8_t blink_cnt, portTickType period);
-void blink_single_buzzled(buzz_led_t buzzer_led, uint8_t blink_cnt, portTickType period);
+void blink_single_buzzled(player_t buzzer_led, uint8_t blink_cnt, portTickType period);
 
 #endif  /* UI_TOOLS_H_ */

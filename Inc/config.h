@@ -16,7 +16,8 @@ typedef struct
 {
     GPIO_TypeDef* buzz_led_port;
     uint16_t buzz_led_pin;
-}buzz_led_t;
+    uint16_t score;
+}player_t;
 
 // Extern declarations
 extern eSystemState eNextState;

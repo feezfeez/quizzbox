@@ -77,7 +77,7 @@ static void _fsm_task (void *pvParameters)
     eSystemEvent eNewEvent;
     TickType_t time_to_wait = FINITE_BLOCKING_TIME;
     uint32_t players_mask = 0;
-    buzz_led_t player_ans;
+    player_t player_ans;
 
     // Period = 10ms
     portTickType period;
