@@ -71,7 +71,9 @@ static void _buzzer_task (void *pvParameters)
         {
             if (i == 0)
             {
+                portENTER_CRITICAL();
                 HAL_GPIO_TogglePin(buzz_led_port, buzz_led_pin);
+                portEXIT_CRITICAL();
                 i = BLINK_PERIOD;
             }
             vTaskDelay(period);
@@ -80,14 +82,18 @@ static void _buzzer_task (void *pvParameters)
 
         if (buzzer_mgmt == Correct_Answer_Event)
         {
+            portENTER_CRITICAL();
             HAL_GPIO_WritePin(buzz_led_port, buzz_led_pin, GPIO_PIN_SET);
+            portEXIT_CRITICAL();
 
             for (j=0 ; j<MAX_TOGGL_LEN ; j++)
                 vTaskDelay(period);
 
             while (correct_cycle != 0)
             {
+                portENTER_CRITICAL();
                 HAL_GPIO_TogglePin(buzz_led_port, buzz_led_pin);
+                portEXIT_CRITICAL();
                 for (j=0 ; j<MAX_TOGGL_LEN ; j++)
                     vTaskDelay(period);
                 correct_cycle--;
@@ -101,6 +107,8 @@ static void _buzzer_task (void *pvParameters)
                 vTaskDelay(period);
         }
 
+        portENTER_CRITICAL();
         HAL_GPIO_WritePin(buzz_led_port, buzz_led_pin, GPIO_PIN_SET);
+        portEXIT_CRITICAL();
     }
 }
