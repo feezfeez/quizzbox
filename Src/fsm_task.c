@@ -87,8 +87,9 @@ static void _fsm_task (void *pvParameters)
     for(;;)
     {
         time_to_wait = portMAX_DELAY;
-        if (eNextState == Idle_State)
-            time_to_wait = FINITE_BLOCKING_TIME; // Set to a finite number to exit Idle State without external event
+        if ((eNextState == Idle_State) ||
+            (eNextState == Correct_UI_State))
+            time_to_wait = FINITE_BLOCKING_TIME; // Set to a finite number to run Idle State or Correct_UI_State without external event
 
         //Read system events
         xQueueReceive(fsm_queue, &eNewEvent, time_to_wait);
