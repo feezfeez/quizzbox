@@ -255,10 +255,10 @@ static void MX_GPIO_Init(void)
                           |R_SS_E_Pin|R_SS_F_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, BLUE_BUZZ_LED_Pin|RED_BUZZ_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, BLUE_BUZZ_LED_Pin|RED_BUZZ_LED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, YELLOW_BUZZ_LED_Pin|GREEN_BUZZ_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, YELLOW_BUZZ_LED_Pin|GREEN_BUZZ_LED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, LD4_Pin|LD3_Pin|LD5_Pin|LD7_Pin 
