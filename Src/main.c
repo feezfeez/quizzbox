@@ -278,7 +278,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, R_SS_G_Pin|B_SS_A_Pin|B_SS_B_Pin|B_SS_C_Pin 
                           |B_SS_D_Pin|B_SS_E_Pin|B_SS_F_Pin|B_SS_G_Pin 
                           |R_SS_A_Pin|R_SS_B_Pin|R_SS_C_Pin|R_SS_D_Pin 
-                          |R_SS_E_Pin|R_SS_F_Pin, GPIO_PIN_RESET);
+                          |R_SS_E_Pin|R_SS_F_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, BLUE_BUZZ_LED_Pin|RED_BUZZ_LED_Pin, GPIO_PIN_SET);
@@ -294,7 +294,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOD, G_SS_B_Pin|G_SS_C_Pin|G_SS_D_Pin|G_SS_E_Pin 
                           |G_SS_F_Pin|G_SS_G_Pin|Y_SS_A_Pin|Y_SS_B_Pin 
                           |Y_SS_C_Pin|Y_SS_D_Pin|Y_SS_E_Pin|Y_SS_F_Pin 
-                          |Y_SS_G_Pin|G_SS_A_Pin, GPIO_PIN_RESET);
+                          |Y_SS_G_Pin|G_SS_A_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : R_SS_G_Pin B_SS_A_Pin B_SS_B_Pin B_SS_C_Pin 
                            B_SS_D_Pin B_SS_E_Pin B_SS_F_Pin B_SS_G_Pin 
