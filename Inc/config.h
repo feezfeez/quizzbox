@@ -14,6 +14,7 @@
 
 #define SINGLE_ANSWER           5 // points
 #define DOUBLE_ANSWER           10 // points
+#define MAX_SCORE               999
 
 #define BLINK_TOGGLE_TIMING     15 // *10ms
 

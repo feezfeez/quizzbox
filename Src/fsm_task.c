@@ -163,26 +163,58 @@ static void _fsm_task (void *pvParameters)
                 else if (eNewEvent == Correct_Answer_Single_Event)
                 {
                     if (player_ans == blue.buzzer)
+                    {
                         blue.score += SINGLE_ANSWER;
+                        if (blue.score > MAX_SCORE)
+                            blue.score = MAX_SCORE;
+                    }
                     else if (player_ans == red.buzzer)
+                    {
                         red.score += SINGLE_ANSWER;
+                        if (red.score > MAX_SCORE)
+                            red.score = MAX_SCORE;
+                    }
                     else if (player_ans == yellow.buzzer)
+                    {
                         yellow.score += SINGLE_ANSWER;
+                        if (yellow.score > MAX_SCORE)
+                            yellow.score = MAX_SCORE;
+                    }
                     else if (player_ans == green.buzzer)
+                    {
                         green.score += SINGLE_ANSWER;
+                        if (green.score > MAX_SCORE)
+                            green.score = MAX_SCORE;
+                    }
 
                     eNextState = CorrectAnswerHandler();
                 }
                 else if (eNewEvent == Correct_Answer_Double_Event)
                 {
                     if (player_ans == blue.buzzer)
+                    {
                         blue.score += DOUBLE_ANSWER;
+                        if (blue.score > MAX_SCORE)
+                            blue.score = MAX_SCORE;
+                    }
                     else if (player_ans == red.buzzer)
+                    {
                         red.score += DOUBLE_ANSWER;
+                        if (red.score > MAX_SCORE)
+                            red.score = MAX_SCORE;
+                    }
                     else if (player_ans == yellow.buzzer)
+                    {
                         yellow.score += DOUBLE_ANSWER;
+                        if (yellow.score > MAX_SCORE)
+                            yellow.score = MAX_SCORE;
+                    }
                     else if (player_ans == green.buzzer)
+                    {
                         green.score += DOUBLE_ANSWER;
+                        if (green.score > MAX_SCORE)
+                            green.score = MAX_SCORE;
+                    }
 
                     eNextState = CorrectAnswerHandler();
                 }
