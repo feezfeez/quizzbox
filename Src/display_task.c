@@ -26,58 +26,48 @@ void create_display_task(void)
 static void _display_task (void *pvParameters)
 {
     // Init
-    scores_t scores = {};
-    digit_t players_digit = {};
-    winner_t winner = {};
+    digit_t digit = {};
     uint8_t digit_sel = 0;
 
     // Period = 10ms
-//    portTickType period;
-//    period = (portTickType)(10/portTICK_RATE_MS);
+    portTickType period;
+    period = (portTickType)(10/portTICK_RATE_MS);
 
     for(;;)
     {
         // Init
-        if ((xQueueReceive(display_queue, &winner, 10) == pdTRUE))
-        {
-            if (winner.player == BLUE_BUZZ_LED_Pin)
-                scores.blue_score += winner.points;
-            else if (winner.player == RED_BUZZ_LED_Pin)
-                scores.red_score += winner.points;
-            else if (winner.player == YELLOW_BUZZ_LED_Pin)
-                scores.yellow_score += winner.points;
-            else if (winner.player == GREEN_BUZZ_LED_Pin)
-                scores.green_score += winner.points;
-        }
 
         // Split digits
         if (digit_sel == 0)
         {
-            players_digit.blue_digit = scores.blue_score % 10;
-            players_digit.red_digit = scores.red_score % 10;
-            players_digit.yellow_digit = scores.yellow_score % 10;
-            players_digit.green_digit = scores.green_score % 10;
+            digit.blue = blue.score % 10;
+            digit.red = red.score % 10;
+            digit.yellow = yellow.score % 10;
+            digit.green = green.score % 10;
         }
         else if (digit_sel == 1)
         {
-            players_digit.blue_digit = (scores.blue_score / 10) % 10;
-            players_digit.red_digit = (scores.red_score / 10) % 10;
-            players_digit.yellow_digit = (scores.yellow_score / 10) % 10;
-            players_digit.green_digit = (scores.green_score / 10) % 10;
+            digit.blue = (blue.score / 10) % 10;
+            digit.red = (red.score / 10) % 10;
+            digit.yellow = (yellow.score / 10) % 10;
+            digit.green = (green.score / 10) % 10;
         }
         else if (digit_sel == 2)
         {
-            players_digit.blue_digit = (scores.blue_score / 100) % 10;
-            players_digit.red_digit = (scores.red_score / 100) % 10;
-            players_digit.yellow_digit = (scores.yellow_score / 100) % 10;
-            players_digit.green_digit = (scores.green_score / 100) % 10;
+            digit.blue = (blue.score / 100) % 10;
+            digit.red = (red.score / 100) % 10;
+            digit.yellow = (yellow.score / 100) % 10;
+            digit.green = (green.score / 100) % 10;
         }
 
         // Display and switch digit
 
         digit_sel++;
 
-        if (digit_sel > 2)
+        if (digit_sel > DIGIT_MAX_NUMBER-1)
             digit_sel = 0;
+
+        // Wait for period
+        vTaskDelay(period);
     }
 }

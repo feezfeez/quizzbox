@@ -8,23 +8,18 @@
 
 void create_display_task();
 
+// Defines
+#define DIGIT_MAX_NUMBER    3
+
 // Handle declaration
 TaskHandle_t display_task_handle;
 
 typedef struct
 {
-    uint16_t blue_score;
-    uint16_t red_score;
-    uint16_t yellow_score;
-    uint16_t green_score;
-}scores_t;
-
-typedef struct
-{
-    uint8_t blue_digit;
-    uint8_t red_digit;
-    uint8_t yellow_digit;
-    uint8_t green_digit;
+    uint8_t blue;
+    uint8_t red;
+    uint8_t yellow;
+    uint8_t green;
 }digit_t;
 
 #endif /* __DISPLAY_TASK_H */

@@ -57,9 +57,8 @@ void mask_buzzleds(uint32_t players_mask)
 void blink_all_buzzleds(uint8_t blink_cnt, portTickType period)
 {
     uint8_t i = 0;
-    uint8_t state_timing = TOGGLE_TIMING;
 
-    for (i=0 ; i<state_timing ; i++)
+    for (i=0 ; i<BLINK_TOGGLE_TIMING ; i++)
         vTaskDelay(period);
 
     while (blink_cnt != 0)
@@ -68,28 +67,7 @@ void blink_all_buzzleds(uint8_t blink_cnt, portTickType period)
         toggle_all_buzzleds();
         portEXIT_CRITICAL();
 
-        for (i=0 ; i<state_timing ; i++)
-            vTaskDelay(period);
-
-        blink_cnt--;
-    }
-}
-
-void blink_single_buzzled(player_t buzzer_led, uint8_t blink_cnt, portTickType period)
-{
-    uint8_t i = 0;
-    uint8_t state_timing = TOGGLE_TIMING;
-
-    for (i=0 ; i<state_timing ; i++)
-        vTaskDelay(period);
-
-    while (blink_cnt != 0)
-    {
-        portENTER_CRITICAL();
-        HAL_GPIO_TogglePin(buzzer_led.buzz_led_port, buzzer_led.buzz_led_pin);
-        portEXIT_CRITICAL();
-
-        for (i=0 ; i<state_timing ; i++)
+        for (i=0 ; i<BLINK_TOGGLE_TIMING ; i++)
             vTaskDelay(period);
 
         blink_cnt--;

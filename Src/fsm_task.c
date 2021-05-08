@@ -61,7 +61,7 @@ eSystemState WrongAnswerHandler(uint32_t players_mask)
         portEXIT_CRITICAL();
 
         // Unmask buzzers who haven't answered yet during the game
-        EXTI->IMR |= ~(players_mask) & (BLUE_BUZZ_BP_Pin | RED_BUZZ_BP_Pin | YELLOW_BUZZ_BP_Pin | GREEN_BUZZ_BP_Pin);
+        EXTI->IMR |= ~(players_mask) & (blue.buzzer | red.buzzer | yellow.buzzer | green.buzzer);
         return Question_State;
     }
 }
@@ -76,9 +76,8 @@ static void _fsm_task (void *pvParameters)
     // Init
     eSystemEvent eNewEvent;
     TickType_t time_to_wait = FINITE_BLOCKING_TIME;
-    uint32_t players_mask = 0;
-    player_t player_ans;
-    winner_t winner = {};
+    uint16_t players_mask = 0;
+    uint16_t player_ans = 0;
 
     // Period = 10ms
     portTickType period;
@@ -87,9 +86,8 @@ static void _fsm_task (void *pvParameters)
     for(;;)
     {
         time_to_wait = portMAX_DELAY;
-        if ((eNextState == Idle_State) ||
-            (eNextState == Correct_UI_State))
-            time_to_wait = FINITE_BLOCKING_TIME; // Set to a finite number to run Idle State or Correct_UI_State without external event
+        if (eNextState == Idle_State)
+            time_to_wait = FINITE_BLOCKING_TIME; // Set to a finite number to run Idle State without external event
 
         //Read system events
         xQueueReceive(fsm_queue, &eNewEvent, time_to_wait);
@@ -113,10 +111,11 @@ static void _fsm_task (void *pvParameters)
                 // Blink all buzzers
                 blink_all_buzzleds(INIT_TOGGL_CNT, period);
 
-                // Reset Mask
+                // Reset variables
                 players_mask = 0;
+                player_ans = 0;
                 // Unmask all players
-                EXTI->IMR |= BLUE_BUZZ_BP_Pin | RED_BUZZ_BP_Pin | YELLOW_BUZZ_BP_Pin | GREEN_BUZZ_BP_Pin;
+                EXTI->IMR |= blue.buzzer | red.buzzer | yellow.buzzer | green.buzzer;
 
                 eNextState = StartQuestionHandler();
                 break;
@@ -128,35 +127,31 @@ static void _fsm_task (void *pvParameters)
                 }
                 else if (eNewEvent == Blue_Buzzer_Pressed_Event)
                 {
-                    players_mask |= BLUE_BUZZ_BP_Pin;
-                    player_ans.buzz_led_port = BLUE_BUZZ_LED_GPIO_Port;
-                    player_ans.buzz_led_pin = BLUE_BUZZ_LED_Pin;
+                    players_mask |= blue.buzzer;
+                    player_ans = blue.buzzer;
                     eNextState = BuzzerPressedHandler();
-                    xQueueOverwrite(buzzer_queue, &eNewEvent);
+                    xQueueOverwrite(buzzer_queue, &blue.buzz_led);
                 }
                 else if (eNewEvent == Red_Buzzer_Pressed_Event)
                 {
-                    players_mask |= RED_BUZZ_BP_Pin;
-                    player_ans.buzz_led_port = RED_BUZZ_LED_GPIO_Port;
-                    player_ans.buzz_led_pin = RED_BUZZ_LED_Pin;
+                    players_mask |= red.buzzer;
+                    player_ans = red.buzzer;
                     eNextState = BuzzerPressedHandler();
-                    xQueueOverwrite(buzzer_queue, &eNewEvent);
+                    xQueueOverwrite(buzzer_queue, &red.buzz_led);
                 }
                 else if (eNewEvent == Yellow_Buzzer_Pressed_Event)
                 {
-                    players_mask |= YELLOW_BUZZ_BP_Pin;
-                    player_ans.buzz_led_port = YELLOW_BUZZ_LED_GPIO_Port;
-                    player_ans.buzz_led_pin = YELLOW_BUZZ_LED_Pin;
+                    players_mask |= yellow.buzzer;
+                    player_ans = yellow.buzzer;
                     eNextState = BuzzerPressedHandler();
-                    xQueueOverwrite(buzzer_queue, &eNewEvent);
+                    xQueueOverwrite(buzzer_queue, &yellow.buzz_led);
                 }
                 else if (eNewEvent == Green_Buzzer_Pressed_Event)
                 {
-                    players_mask |= GREEN_BUZZ_BP_Pin;
-                    player_ans.buzz_led_port = GREEN_BUZZ_LED_GPIO_Port;
-                    player_ans.buzz_led_pin = GREEN_BUZZ_LED_Pin;
+                    players_mask |= green.buzzer;
+                    player_ans = green.buzzer;
                     eNextState = BuzzerPressedHandler();
-                    xQueueOverwrite(buzzer_queue, &eNewEvent);
+                    xQueueOverwrite(buzzer_queue, &green.buzz_led);
                 }
                 break;
 
@@ -167,17 +162,29 @@ static void _fsm_task (void *pvParameters)
                 }
                 else if (eNewEvent == Correct_Answer_Single_Event)
                 {
-                    winner.player = player_ans.buzz_led_pin;
-                    winner.points = SINGLE_ANSWER;
+                    if (player_ans == blue.buzzer)
+                        blue.score += SINGLE_ANSWER;
+                    else if (player_ans == red.buzzer)
+                        red.score += SINGLE_ANSWER;
+                    else if (player_ans == yellow.buzzer)
+                        yellow.score += SINGLE_ANSWER;
+                    else if (player_ans == green.buzzer)
+                        green.score += SINGLE_ANSWER;
+
                     eNextState = CorrectAnswerHandler();
-                    xQueueSend(display_queue, &winner, 0);
                 }
                 else if (eNewEvent == Correct_Answer_Double_Event)
                 {
-                    winner.player = player_ans.buzz_led_pin;
-                    winner.points = DOUBLE_ANSWER;
+                    if (player_ans == blue.buzzer)
+                        blue.score += DOUBLE_ANSWER;
+                    else if (player_ans == red.buzzer)
+                        red.score += DOUBLE_ANSWER;
+                    else if (player_ans == yellow.buzzer)
+                        yellow.score += DOUBLE_ANSWER;
+                    else if (player_ans == green.buzzer)
+                        green.score += DOUBLE_ANSWER;
+
                     eNextState = CorrectAnswerHandler();
-                    xQueueSend(display_queue, &winner, 0);
                 }
                 else if (eNewEvent == Wrong_Answer_Event)
                 {
@@ -186,13 +193,14 @@ static void _fsm_task (void *pvParameters)
                 break;
 
             case Correct_UI_State:
-                portENTER_CRITICAL();
-                HAL_GPIO_WritePin(player_ans.buzz_led_port, player_ans.buzz_led_pin, GPIO_PIN_SET);
-                portEXIT_CRITICAL();
-
-                blink_single_buzzled(player_ans, CORRECT_TOGGL_CNT, period);
-
-                eNextState = ReadyToRestartHandler();
+                if (eNewEvent == Start_Pressed_Event)
+                {
+                    StartButtonHandler();
+                }
+                if (eNewEvent == End_Of_Correct_UI_Event)
+                {
+                    eNextState = ReadyToRestartHandler();
+                }
                 break;
 
             default:

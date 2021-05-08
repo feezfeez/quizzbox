@@ -39,38 +39,37 @@ static void _handler_task (void *pvParameters)
 
         EventToSend = 0;
 
-        switch(exti_pin)
+        if (exti_pin == blue.buzzer)
         {
-            case BLUE_BUZZ_BP_Pin:
-                EXTI->IMR &= ~BLUE_BUZZ_BP_Pin & ~RED_BUZZ_BP_Pin & ~YELLOW_BUZZ_BP_Pin & ~GREEN_BUZZ_BP_Pin;
-                EventToSend = Blue_Buzzer_Pressed_Event;
-                break;
-
-            case RED_BUZZ_BP_Pin:
-                EXTI->IMR &= ~BLUE_BUZZ_BP_Pin & ~RED_BUZZ_BP_Pin & ~YELLOW_BUZZ_BP_Pin & ~GREEN_BUZZ_BP_Pin;
-                EventToSend = Red_Buzzer_Pressed_Event;
-                break;
-
-            case YELLOW_BUZZ_BP_Pin:
-                EXTI->IMR &= ~BLUE_BUZZ_BP_Pin & ~RED_BUZZ_BP_Pin & ~YELLOW_BUZZ_BP_Pin & ~GREEN_BUZZ_BP_Pin;
-                EventToSend = Yellow_Buzzer_Pressed_Event;
-                break;
-
-            case GREEN_BUZZ_BP_Pin:
-                EXTI->IMR &= ~BLUE_BUZZ_BP_Pin & ~RED_BUZZ_BP_Pin & ~YELLOW_BUZZ_BP_Pin & ~GREEN_BUZZ_BP_Pin;
-                EventToSend = Green_Buzzer_Pressed_Event;
-                break;
-
-            case OK_BUTTON_Pin:
-                EventToSend = Correct_Answer_Single_Event;
-                break;
-
-            case KO_BUTTON_Pin:
-                EventToSend = Wrong_Answer_Event;
-            break;
-
-            default:
-                break;
+            EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
+                         ~(yellow.buzzer) & ~(green.buzzer);
+            EventToSend = Blue_Buzzer_Pressed_Event;
+        }
+        else if (exti_pin == red.buzzer)
+        {
+            EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
+                         ~(yellow.buzzer) & ~(green.buzzer);
+            EventToSend = Red_Buzzer_Pressed_Event;
+        }
+        else if (exti_pin == yellow.buzzer)
+        {
+            EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
+                         ~(yellow.buzzer) & ~(green.buzzer);
+            EventToSend = Yellow_Buzzer_Pressed_Event;
+        }
+        else if (exti_pin == green.buzzer)
+        {
+            EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
+                         ~(yellow.buzzer) & ~(green.buzzer);
+            EventToSend = Green_Buzzer_Pressed_Event;
+        }
+        else if (exti_pin == OK_BUTTON_Pin)
+        {
+            EventToSend = Correct_Answer_Single_Event;
+        }
+        else if (exti_pin == KO_BUTTON_Pin)
+        {
+            EventToSend = Wrong_Answer_Event;
         }
 
         xQueueSend(fsm_queue, &EventToSend, 0);

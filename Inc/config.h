@@ -8,25 +8,29 @@
 
 // Global configuration ==========================
 
-#define BUZZ_ID_QUEUE_LEN   1
-#define EXTI_QUEUE_LEN      3
-#define FSM_QUEUE_LEN       3
+#define BUZZ_ID_QUEUE_LEN       1
+#define EXTI_QUEUE_LEN          3
+#define FSM_QUEUE_LEN           3
 
-#define SINGLE_ANSWER       5 // points
-#define DOUBLE_ANSWER       10 // points
+#define SINGLE_ANSWER           5 // points
+#define DOUBLE_ANSWER           10 // points
+
+#define BLINK_TOGGLE_TIMING     15 // *10ms
 
 typedef struct
 {
-    GPIO_TypeDef* buzz_led_port;
-    uint16_t buzz_led_pin;
+    GPIO_TypeDef* port;
+    uint16_t pin;
+}led_t;
+
+typedef struct
+{
+    uint16_t buzzer;
+    led_t buzz_led;
+    led_t front_led;
+    led_t panel_led;
     uint16_t score;
 }player_t;
-
-typedef struct
-{
-    uint16_t player;
-    uint8_t points;
-}winner_t;
 
 // Extern declarations
 extern eSystemState eNextState;
@@ -34,6 +38,7 @@ extern eSystemState eNextState;
 extern xQueueHandle buzzer_queue;
 extern xQueueHandle exti_queue;
 extern xQueueHandle fsm_queue;
-extern xQueueHandle display_queue;
+
+extern player_t blue, red, yellow, green;
 
 #endif /* __CONFIG_H */

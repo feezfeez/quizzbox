@@ -6,9 +6,6 @@
 #ifndef UI_TOOLS_H_
 #define UI_TOOLS_H_
 
-// Defines
-#define TOGGLE_TIMING       15 // *10ms
-
 void set_reset_all_buzzleds(GPIO_PinState set_reset);
 void toggle_all_buzzleds();
 void mask_buzzleds(uint32_t players_mask);

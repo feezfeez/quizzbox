@@ -37,7 +37,8 @@ typedef enum
     Green_Buzzer_Pressed_Event,
     Correct_Answer_Single_Event,
     Correct_Answer_Double_Event,
-    Wrong_Answer_Event
+    Wrong_Answer_Event,
+    End_Of_Correct_UI_Event
 } eSystemEvent;
 
 #endif /* __FSM_TASK_H */

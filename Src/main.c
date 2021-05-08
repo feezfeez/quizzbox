@@ -45,7 +45,30 @@
 xQueueHandle buzzer_queue;
 xQueueHandle exti_queue;
 xQueueHandle fsm_queue;
-xQueueHandle display_queue;
+
+player_t blue = {BLUE_BUZZ_BP_Pin,
+                 {BLUE_BUZZ_LED_GPIO_Port, BLUE_BUZZ_LED_Pin},
+                 {NULL, 0},
+                 {NULL, 0},
+                 0};
+
+player_t red = {RED_BUZZ_BP_Pin,
+                {RED_BUZZ_LED_GPIO_Port, RED_BUZZ_LED_Pin},
+                {NULL, 0},
+                {NULL, 0},
+                0};
+
+player_t yellow = {YELLOW_BUZZ_BP_Pin,
+                   {YELLOW_BUZZ_LED_GPIO_Port, YELLOW_BUZZ_LED_Pin},
+                   {NULL, 0},
+                   {NULL, 0},
+                   0};
+
+player_t green = {GREEN_BUZZ_BP_Pin,
+                  {GREEN_BUZZ_LED_GPIO_Port, GREEN_BUZZ_LED_Pin},
+                  {NULL, 0},
+                  {NULL, 0},
+                  0};
 
 /* USER CODE END PD */
 
@@ -130,10 +153,9 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  buzzer_queue = xQueueCreate(BUZZ_ID_QUEUE_LEN, sizeof(eSystemEvent));
+  buzzer_queue = xQueueCreate(BUZZ_ID_QUEUE_LEN, sizeof(led_t));
   exti_queue = xQueueCreate(EXTI_QUEUE_LEN, sizeof(uint16_t));
   fsm_queue = xQueueCreate(FSM_QUEUE_LEN, sizeof(eSystemEvent));
-  display_queue = xQueueCreate(FSM_QUEUE_LEN, sizeof(winner_t));
   /* USER CODE END RTOS_QUEUES */
 
 
