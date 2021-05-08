@@ -31,9 +31,10 @@ static void _display_task (void *pvParameters)
     uint8_t digit_sel = 0;
     sevenseg_data_t sevenseg_data = {};
 
-    // Period = 10ms
-    portTickType period;
-    period = (portTickType)(10/portTICK_RATE_MS);
+    // Period = 1ms
+    portTickType period, last_tick_time;
+    period = (portTickType)(1/portTICK_RATE_MS);
+    last_tick_time = xTaskGetTickCount();
 
     for(;;)
     {
@@ -94,7 +95,7 @@ static void _display_task (void *pvParameters)
         if (digit_sel > DIGIT_MAX_NUMBER-1)
             digit_sel = 0;
 
-        // Wait for period
-        vTaskDelay(period);
+        // Wait
+        vTaskDelayUntil(&last_tick_time, period);
     }
 }
