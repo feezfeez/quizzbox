@@ -63,11 +63,11 @@ static void _handler_task (void *pvParameters)
                          ~(yellow.buzzer) & ~(green.buzzer);
             EventToSend = Green_Buzzer_Pressed_Event;
         }
-        else if (exti_pin == OK_BUTTON_Pin)
+        else if (exti_pin == OK_SINGLE_BP_Pin)
         {
             EventToSend = Correct_Answer_Single_Event;
         }
-        else if (exti_pin == KO_BUTTON_Pin)
+        else if (exti_pin == KO_BP_Pin)
         {
             EventToSend = Wrong_Answer_Event;
         }
