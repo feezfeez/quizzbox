@@ -344,8 +344,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : OK_BUTTON_Pin KO_BUTTON_Pin */
-  GPIO_InitStruct.Pin = OK_BUTTON_Pin|KO_BUTTON_Pin;
+  /*Configure GPIO pins : OK_SINGLE_BP_Pin OK_DOUBLE_BP_Pin KO_BP_Pin CANCEL_BP_Pin */
+  GPIO_InitStruct.Pin = OK_SINGLE_BP_Pin|OK_DOUBLE_BP_Pin|KO_BP_Pin|CANCEL_BP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
