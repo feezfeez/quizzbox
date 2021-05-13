@@ -38,7 +38,16 @@ typedef enum
     Correct_Answer_Single_Event,
     Correct_Answer_Double_Event,
     Wrong_Answer_Event,
-    End_Of_Correct_UI_Event
+    End_Of_Correct_UI_Event,
+    Cancel_Event
 } eSystemEvent;
+
+// Different type events
+typedef enum
+{
+    single_ans,
+    double_ans,
+    incorrect_ans,
+} cancel_ans_t;
 
 #endif /* __FSM_TASK_H */

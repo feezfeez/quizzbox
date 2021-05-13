@@ -51,7 +51,8 @@ static void _buzzer_task (void *pvParameters)
         portEXIT_CRITICAL();
 
         // Blink until answer is approved (or not)
-        while(eNextState == Pending_Answer_State)
+        while((eNextState == Pending_Answer_State) &&
+              (uxQueueMessagesWaiting(buzzer_queue) == 0))
         {
             if (i == 0)
             {

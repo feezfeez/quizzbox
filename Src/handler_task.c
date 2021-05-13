@@ -67,9 +67,19 @@ static void _handler_task (void *pvParameters)
         {
             EventToSend = Correct_Answer_Single_Event;
         }
+        else if (exti_pin == OK_DOUBLE_BP_Pin)
+        {
+            EventToSend = Correct_Answer_Double_Event;
+        }
         else if (exti_pin == KO_BP_Pin)
         {
             EventToSend = Wrong_Answer_Event;
+        }
+        else if (exti_pin == CANCEL_BP_Pin)
+        {
+            EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
+                         ~(yellow.buzzer) & ~(green.buzzer);
+            EventToSend = Cancel_Event;
         }
 
         xQueueSend(fsm_queue, &EventToSend, 0);

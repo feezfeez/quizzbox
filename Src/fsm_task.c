@@ -8,6 +8,7 @@
 #include "task.h"
 #include "queue.h"
 
+#include <stdbool.h>
 #include "main.h"
 #include "fsm_task.h"
 #include "config.h"
@@ -71,13 +72,44 @@ eSystemState StartButtonHandler(void)
     return Idle_State;
 }
 
+eSystemState CancelHandler(uint16_t *players_mask, uint16_t mask_save,
+                           player_t *player_ans, cancel_ans_t ans_to_cancel)
+{
+    eSystemEvent EventToSend;
+
+    *players_mask = mask_save;
+
+    if (ans_to_cancel == single_ans)
+        player_ans->score -= SINGLE_ANSWER;
+    else if (ans_to_cancel == double_ans)
+        player_ans->score -= DOUBLE_ANSWER;
+
+    if (player_ans->buzzer == blue.buzzer)
+        EventToSend = Blue_Buzzer_Pressed_Event;
+    else if (player_ans->buzzer == red.buzzer)
+        EventToSend = Red_Buzzer_Pressed_Event;
+    else if (player_ans->buzzer == yellow.buzzer)
+        EventToSend = Yellow_Buzzer_Pressed_Event;
+    else if (player_ans->buzzer == green.buzzer)
+        EventToSend = Green_Buzzer_Pressed_Event;
+
+    xQueueSend(fsm_queue, &EventToSend, 0);
+
+    return Question_State;
+}
+
 static void _fsm_task (void *pvParameters)
 {
     // Init
     eSystemEvent eNewEvent;
     TickType_t time_to_wait = FINITE_BLOCKING_TIME;
     uint16_t players_mask = 0;
-    uint16_t player_ans = 0;
+    player_t *player_ans = NULL;
+    uint16_t mask_save = 0;
+    player_t *ans_save = NULL;
+    cancel_ans_t ans_valid = 0;
+    bool cancel_flag = false;
+
 
     // Period = 10ms
     portTickType period;
@@ -113,7 +145,7 @@ static void _fsm_task (void *pvParameters)
 
                 // Reset variables
                 players_mask = 0;
-                player_ans = 0;
+
                 // Unmask all players
                 EXTI->IMR |= blue.buzzer | red.buzzer | yellow.buzzer | green.buzzer;
 
@@ -125,31 +157,39 @@ static void _fsm_task (void *pvParameters)
                 {
                     StartButtonHandler();
                 }
+                else if (eNewEvent == Cancel_Event)
+                {
+                    if (cancel_flag == true)
+                    {
+                        eNextState = CancelHandler(&players_mask, mask_save, ans_save, ans_valid);
+                        cancel_flag = false;
+                    }
+                }
                 else if (eNewEvent == Blue_Buzzer_Pressed_Event)
                 {
                     players_mask |= blue.buzzer;
-                    player_ans = blue.buzzer;
+                    player_ans = &blue;
                     eNextState = BuzzerPressedHandler();
                     xQueueOverwrite(buzzer_queue, &blue.buzz_led);
                 }
                 else if (eNewEvent == Red_Buzzer_Pressed_Event)
                 {
                     players_mask |= red.buzzer;
-                    player_ans = red.buzzer;
+                    player_ans = &red;
                     eNextState = BuzzerPressedHandler();
                     xQueueOverwrite(buzzer_queue, &red.buzz_led);
                 }
                 else if (eNewEvent == Yellow_Buzzer_Pressed_Event)
                 {
                     players_mask |= yellow.buzzer;
-                    player_ans = yellow.buzzer;
+                    player_ans = &yellow;
                     eNextState = BuzzerPressedHandler();
                     xQueueOverwrite(buzzer_queue, &yellow.buzz_led);
                 }
                 else if (eNewEvent == Green_Buzzer_Pressed_Event)
                 {
                     players_mask |= green.buzzer;
-                    player_ans = green.buzzer;
+                    player_ans = &green;
                     eNextState = BuzzerPressedHandler();
                     xQueueOverwrite(buzzer_queue, &green.buzz_led);
                 }
@@ -160,66 +200,50 @@ static void _fsm_task (void *pvParameters)
                 {
                     StartButtonHandler();
                 }
+                else if (eNewEvent == Cancel_Event)
+                {
+                    if (cancel_flag == true)
+                    {
+                        eNextState = CancelHandler(&players_mask, mask_save, ans_save, ans_valid);
+                        cancel_flag = false;
+                    }
+                }
                 else if (eNewEvent == Correct_Answer_Single_Event)
                 {
-                    if (player_ans == blue.buzzer)
-                    {
-                        blue.score += SINGLE_ANSWER;
-                        if (blue.score > MAX_SCORE)
-                            blue.score = MAX_SCORE;
-                    }
-                    else if (player_ans == red.buzzer)
-                    {
-                        red.score += SINGLE_ANSWER;
-                        if (red.score > MAX_SCORE)
-                            red.score = MAX_SCORE;
-                    }
-                    else if (player_ans == yellow.buzzer)
-                    {
-                        yellow.score += SINGLE_ANSWER;
-                        if (yellow.score > MAX_SCORE)
-                            yellow.score = MAX_SCORE;
-                    }
-                    else if (player_ans == green.buzzer)
-                    {
-                        green.score += SINGLE_ANSWER;
-                        if (green.score > MAX_SCORE)
-                            green.score = MAX_SCORE;
-                    }
+                    // Save context in case of "Cancel" action
+                    mask_save = players_mask;
+                    ans_save = player_ans;
+                    ans_valid = single_ans;
+                    cancel_flag = true;
+
+                    player_ans->score += SINGLE_ANSWER;
+                    if (player_ans->score > MAX_SCORE)
+                        player_ans->score = MAX_SCORE;
 
                     eNextState = CorrectAnswerHandler();
                 }
                 else if (eNewEvent == Correct_Answer_Double_Event)
                 {
-                    if (player_ans == blue.buzzer)
-                    {
-                        blue.score += DOUBLE_ANSWER;
-                        if (blue.score > MAX_SCORE)
-                            blue.score = MAX_SCORE;
-                    }
-                    else if (player_ans == red.buzzer)
-                    {
-                        red.score += DOUBLE_ANSWER;
-                        if (red.score > MAX_SCORE)
-                            red.score = MAX_SCORE;
-                    }
-                    else if (player_ans == yellow.buzzer)
-                    {
-                        yellow.score += DOUBLE_ANSWER;
-                        if (yellow.score > MAX_SCORE)
-                            yellow.score = MAX_SCORE;
-                    }
-                    else if (player_ans == green.buzzer)
-                    {
-                        green.score += DOUBLE_ANSWER;
-                        if (green.score > MAX_SCORE)
-                            green.score = MAX_SCORE;
-                    }
+                    // Save context in case of "Cancel" action
+                    mask_save = players_mask;
+                    ans_save = player_ans;
+                    ans_valid = double_ans;
+                    cancel_flag = true;
+
+                    player_ans->score += SINGLE_ANSWER;
+                    if (player_ans->score > MAX_SCORE)
+                        player_ans->score = MAX_SCORE;
 
                     eNextState = CorrectAnswerHandler();
                 }
                 else if (eNewEvent == Wrong_Answer_Event)
                 {
+                    // Save context in case of "Cancel" action
+                    mask_save = players_mask;
+                    ans_save = player_ans;
+                    ans_valid = incorrect_ans;
+                    cancel_flag = true;
+
                     eNextState = WrongAnswerHandler(players_mask);
                 }
                 break;
