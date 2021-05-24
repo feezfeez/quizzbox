@@ -19,7 +19,7 @@ eSystemState eNextState = Idle_State;
 
 static void _fsm_task(void *pvParameters);
 
-static const uint32_t full_mask = BLUE_BUZZ_BP_Pin | RED_BUZZ_BP_Pin | YELLOW_BUZZ_BP_Pin | GREEN_BUZZ_BP_Pin;
+static const uint16_t full_mask = BLUE_BUZZ_BP_Pin | RED_BUZZ_BP_Pin | YELLOW_BUZZ_BP_Pin | GREEN_BUZZ_BP_Pin;
 
 void create_fsm_task(void)
 {
@@ -49,7 +49,7 @@ eSystemState ReadyToRestartHandler(void)
     return Idle_State;
 }
 
-eSystemState WrongAnswerHandler(uint32_t players_mask)
+eSystemState WrongAnswerHandler(uint16_t players_mask)
 {
     if (players_mask == full_mask)
     {
