@@ -29,7 +29,12 @@ static void _display_task (void *pvParameters)
     // Init
     digit_t digit = {};
     uint8_t digit_sel = 0;
-    sevenseg_data_t sevenseg_data = {};
+//    sevenseg_data_t sevenseg_data = {};
+
+    uint16_t blue_sseg_conv[10] = {B_ZERO, B_ONE, B_TWO, B_THREE, B_FOUR, B_FIVE, B_SIX, B_SEVEN, B_EIGHT, B_NINE};
+    uint16_t red_sseg_conv[10] = {R_ZERO, R_ONE, R_TWO, R_THREE, R_FOUR, R_FIVE, R_SIX, R_SEVEN, R_EIGHT, R_NINE};
+    uint16_t yellow_sseg_conv[10] = {Y_ZERO, Y_ONE, Y_TWO, Y_THREE, Y_FOUR, Y_FIVE, Y_SIX, Y_SEVEN, Y_EIGHT, Y_NINE};
+    uint16_t green_sseg_conv[10] = {G_ZERO, G_ONE, G_TWO, G_THREE, G_FOUR, G_FIVE, G_SIX, G_SEVEN, G_EIGHT, G_NINE};
 
     // Period = 1ms
     portTickType period, last_tick_time;
@@ -41,12 +46,12 @@ static void _display_task (void *pvParameters)
         // Split digits
         if (digit_sel == 0)
         {
-            digit.blue = blue.score % 10;
-            digit.red = red.score % 10;
-            digit.yellow = yellow.score % 10;
-            digit.green = green.score % 10;
+            digit.blue = blue.total_score % 10;
+            digit.red = red.total_score % 10;
+            digit.yellow = yellow.total_score % 10;
+            digit.green = green.total_score % 10;
         }
-        else if (digit_sel == 1)
+/*        else if (digit_sel == 1)
         {
             digit.blue = (blue.score / 10) % 10;
             digit.red = (red.score / 10) % 10;
@@ -59,14 +64,14 @@ static void _display_task (void *pvParameters)
             digit.red = (red.score / 100) % 10;
             digit.yellow = (yellow.score / 100) % 10;
             digit.green = (green.score / 100) % 10;
-        }
+        }*/
 
-        // Convert digit to seven segments data
-        sevenseg_data.blue = num_to_sevenseg(digit.blue, blue.buzzer);
-        sevenseg_data.red = num_to_sevenseg(digit.red, red.buzzer);
-        sevenseg_data.yellow = num_to_sevenseg(digit.yellow, yellow.buzzer);
-        sevenseg_data.green = num_to_sevenseg(digit.green, green.buzzer);
-
+/*        // Convert digit to seven segments data
+        sevenseg_data.blue = blue_sseg_conv[digit.blue];//num_to_sevenseg(digit.blue, blue.buzzer);
+        sevenseg_data.red =  red_sseg_conv[digit.red];//num_to_sevenseg(digit.red, red.buzzer);
+        sevenseg_data.yellow =  yellow_sseg_conv[digit.yellow];//num_to_sevenseg(digit.yellow, yellow.buzzer);
+        sevenseg_data.green =  green_sseg_conv[digit.green];//num_to_sevenseg(digit.green, green.buzzer);
+*/
         // Off digits
 
         // Reset all the segments
@@ -82,10 +87,10 @@ static void _display_task (void *pvParameters)
         // Set the appropriate segments
         if (digit_sel == 0)
         {
-            B_SS_A_GPIO_Port->BSRR |= sevenseg_data.blue << 16;
-            R_SS_A_GPIO_Port->BSRR |= sevenseg_data.red << 16;
-            Y_SS_A_GPIO_Port->BSRR |= sevenseg_data.yellow << 16;
-            G_SS_A_GPIO_Port->BSRR |= sevenseg_data.green << 16;
+            B_SS_A_GPIO_Port->BSRR |= blue_sseg_conv[digit.blue] << 16;//sevenseg_data.blue << 16;
+            R_SS_A_GPIO_Port->BSRR |= red_sseg_conv[digit.red] << 16;//sevenseg_data.red << 16;
+            Y_SS_A_GPIO_Port->BSRR |= yellow_sseg_conv[digit.yellow] << 16;//sevenseg_data.yellow << 16;
+            G_SS_A_GPIO_Port->BSRR |= green_sseg_conv[digit.green] << 16;//sevenseg_data.green << 16;
         }
 
         // On digits

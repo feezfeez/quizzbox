@@ -74,7 +74,7 @@ void blink_all_buzzleds(uint8_t blink_cnt, portTickType period)
     }
 }
 
-uint16_t num_to_sevenseg(sevenseg_digit_t digit, uint16_t player)
+/*uint16_t num_to_sevenseg(sevenseg_digit_t digit, uint16_t player)
 {
     uint16_t seven_seg_value = 0;
 
@@ -223,4 +223,4 @@ uint16_t num_to_sevenseg(sevenseg_digit_t digit, uint16_t player)
     }
 
     return seven_seg_value;
-}
+}*/
