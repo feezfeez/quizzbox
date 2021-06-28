@@ -30,8 +30,7 @@ typedef struct
     led_t buzz_led;
     led_t front_led;
     led_t panel_led;
-    uint16_t total_score;
-    uint16_t game_score;
+    uint16_t score;
 }player_t;
 
 // Extern declarations
