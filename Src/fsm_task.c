@@ -169,17 +169,15 @@ static void _fsm_task (void *pvParameters)
                     players_mask |= event_received.player->buzzer;
                     player_ans = event_received.player;
 
-                    HAL_GPIO_WritePin(event_received.player->front_led.port,
-                                      event_received.player->front_led.pin,
-                                      GPIO_PIN_SET);
-
+                    portENTER_CRITICAL();
                     HAL_GPIO_WritePin(event_received.player->top_panel_led.port,
                                       event_received.player->top_panel_led.pin,
                                       GPIO_PIN_RESET);
+                    portEXIT_CRITICAL();
 
                     eNextState = BuzzerPressedHandler();
 
-                    xQueueOverwrite(buzzer_queue, &event_received.player->buzz_led);
+                    xQueueOverwrite(buzzer_queue, &event_received.player->color_led);
                 }
                 break;
 
@@ -232,13 +230,11 @@ static void _fsm_task (void *pvParameters)
                     ans_valid = incorrect_ans;
                     cancel_flag = true;
 
-                    HAL_GPIO_WritePin(player_ans->front_led.port,
-                                      player_ans->front_led.pin,
-                                      GPIO_PIN_RESET);
-
+                    portENTER_CRITICAL();
                     HAL_GPIO_WritePin(player_ans->top_panel_led.port,
                                       player_ans->top_panel_led.pin,
                                       GPIO_PIN_SET);
+                    portEXIT_CRITICAL();
 
                     eNextState = WrongAnswerHandler(players_mask);
                 }

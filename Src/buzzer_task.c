@@ -31,7 +31,7 @@ static void _buzzer_task (void *pvParameters)
     // Init
     uint8_t i = 0;
     uint8_t blink_cnt = CORRECT_TOGGL_CNT;
-    led_t buzzled = {};
+    led_group_t led_group;
 
     // Period = 10ms
     portTickType period;
@@ -43,21 +43,24 @@ static void _buzzer_task (void *pvParameters)
         i = 0;
 
         // Block until a buzzer is pressed
-        xQueueReceive(buzzer_queue, &buzzled, portMAX_DELAY);
+        xQueueReceive(buzzer_queue, &led_group, portMAX_DELAY);
 
-        // Switch off all buzzers LED
+        // Switch off all buzzers LED and switch on the correct front LED
         portENTER_CRITICAL();
         set_reset_all_buzzleds(GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(led_group.front_led.port,
+                          led_group.front_led.pin,
+                          GPIO_PIN_SET);
         portEXIT_CRITICAL();
 
-        // Blink until answer is approved (or not)
+        // Blink until answer is validated (or not)
         while((eNextState == Pending_Answer_State) &&
               (uxQueueMessagesWaiting(buzzer_queue) == 0))
         {
             if (i == 0)
             {
                 portENTER_CRITICAL();
-                HAL_GPIO_TogglePin(buzzled.port, buzzled.pin);
+                HAL_GPIO_TogglePin(led_group.buzz_led.port, led_group.buzz_led.pin);
                 portEXIT_CRITICAL();
                 i = PEND_ANS_PERIOD;
             }
@@ -69,12 +72,26 @@ static void _buzzer_task (void *pvParameters)
         i = 0;
         blink_cnt = CORRECT_TOGGL_CNT;
 
+        portENTER_CRITICAL();
+        HAL_GPIO_WritePin(led_group.buzz_led.port,
+                          led_group.buzz_led.pin,
+                          GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(led_group.front_led.port,
+                          led_group.front_led.pin,
+                          GPIO_PIN_RESET);
+        portEXIT_CRITICAL();
+
         if (eNextState == Correct_UI_State)
         {
-            portENTER_CRITICAL();
-            HAL_GPIO_WritePin(buzzled.port, buzzled.pin, GPIO_PIN_RESET);
+/*            portENTER_CRITICAL();
+            HAL_GPIO_WritePin(led_group.buzz_led.port,
+                              led_group.buzz_led.pin,
+                              GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(led_group.front_led.port,
+                              led_group.front_led.pin,
+                              GPIO_PIN_RESET);
             portEXIT_CRITICAL();
-
+*/
             for (i=0 ; i<BLINK_TOGGLE_TIMING ; i++)
                 vTaskDelay(period);
         }
@@ -82,7 +99,8 @@ static void _buzzer_task (void *pvParameters)
         while (eNextState == Correct_UI_State && blink_cnt != 0)
         {
             portENTER_CRITICAL();
-            HAL_GPIO_TogglePin(buzzled.port, buzzled.pin);
+            HAL_GPIO_TogglePin(led_group.buzz_led.port, led_group.buzz_led.pin);
+            HAL_GPIO_TogglePin(led_group.front_led.port, led_group.front_led.pin);
             portEXIT_CRITICAL();
 
             for (i=0 ; i<BLINK_TOGGLE_TIMING ; i++)

@@ -47,26 +47,26 @@ xQueueHandle exti_queue;
 xQueueHandle fsm_queue;
 
 player_t blue = {BLUE_BUZZ_BP_Pin,
-                 {BLUE_BUZZ_LED_GPIO_Port, BLUE_BUZZ_LED_Pin},
-                 {B_MB_LED_CMD_GPIO_Port, B_MB_LED_CMD_Pin},
+                 {{BLUE_BUZZ_LED_GPIO_Port, BLUE_BUZZ_LED_Pin},
+                 {B_MB_LED_CMD_GPIO_Port, B_MB_LED_CMD_Pin}},
                  {B_STAT_LED_CMD_GPIO_Port, B_STAT_LED_CMD_Pin},
                  0};
 
 player_t red = {RED_BUZZ_BP_Pin,
-                {RED_BUZZ_LED_GPIO_Port, RED_BUZZ_LED_Pin},
-                {R_MB_LED_CMD_GPIO_Port, R_MB_LED_CMD_Pin},
+                {{RED_BUZZ_LED_GPIO_Port, RED_BUZZ_LED_Pin},
+                {R_MB_LED_CMD_GPIO_Port, R_MB_LED_CMD_Pin}},
                 {R_STAT_LED_CMD_GPIO_Port, R_STAT_LED_CMD_Pin},
                 0};
 
 player_t yellow = {YELLOW_BUZZ_BP_Pin,
-                   {YELLOW_BUZZ_LED_GPIO_Port, YELLOW_BUZZ_LED_Pin},
-                   {Y_MB_LED_CMD_GPIO_Port, Y_MB_LED_CMD_Pin},
+                   {{YELLOW_BUZZ_LED_GPIO_Port, YELLOW_BUZZ_LED_Pin},
+                   {Y_MB_LED_CMD_GPIO_Port, Y_MB_LED_CMD_Pin}},
                    {Y_STAT_LED_CMD_GPIO_Port, Y_STAT_LED_CMD_Pin},
                    0};
 
 player_t green = {GREEN_BUZZ_BP_Pin,
-                  {GREEN_BUZZ_LED_GPIO_Port, GREEN_BUZZ_LED_Pin},
-                  {G_MB_LED_CMD_GPIO_Port, G_MB_LED_CMD_Pin},
+                  {{GREEN_BUZZ_LED_GPIO_Port, GREEN_BUZZ_LED_Pin},
+                  {G_MB_LED_CMD_GPIO_Port, G_MB_LED_CMD_Pin}},
                   {G_STAT_LED_CMD_GPIO_Port, G_STAT_LED_CMD_Pin},
                   0};
 
@@ -153,7 +153,7 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  buzzer_queue = xQueueCreate(BUZZ_ID_QUEUE_LEN, sizeof(led_t));
+  buzzer_queue = xQueueCreate(BUZZ_ID_QUEUE_LEN, sizeof(led_group_t));
   exti_queue = xQueueCreate(EXTI_QUEUE_LEN, sizeof(uint16_t));
   fsm_queue = xQueueCreate(FSM_QUEUE_LEN, sizeof(fsm_input_t));
   /* USER CODE END RTOS_QUEUES */

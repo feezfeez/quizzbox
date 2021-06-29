@@ -26,9 +26,14 @@ typedef struct
 
 typedef struct
 {
-    uint16_t buzzer;
     led_t buzz_led;
     led_t front_led;
+}led_group_t;
+
+typedef struct
+{
+    uint16_t buzzer;
+    led_group_t color_led;
     led_t top_panel_led;
     uint16_t score;
 }player_t;
