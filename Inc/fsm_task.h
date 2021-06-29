@@ -31,10 +31,7 @@ typedef enum
 typedef enum
 {
     Start_Pressed_Event = 1,
-    Blue_Buzzer_Pressed_Event,
-    Red_Buzzer_Pressed_Event,
-    Yellow_Buzzer_Pressed_Event,
-    Green_Buzzer_Pressed_Event,
+    Buzzer_Pressed_Event,
     Correct_Answer_Single_Event,
     Correct_Answer_Double_Event,
     Wrong_Answer_Event,

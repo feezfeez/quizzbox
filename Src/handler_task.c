@@ -27,65 +27,74 @@ static void _handler_task (void *pvParameters)
 {
     // Init
     uint16_t exti_pin = 0;
-    eSystemEvent EventToSend;
+    fsm_input_t event_to_send;
 
     for(;;)
     {
+        // Reset variables
+        event_to_send.player = NULL;
+
         // Block until interrupt on external input occurs
         xQueueReceive(exti_queue, &exti_pin, portMAX_DELAY);
 
         if (eNextState == Idle_State)
             continue;
 
-        EventToSend = 0;
-
         if (exti_pin == blue.buzzer)
         {
             EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
                          ~(yellow.buzzer) & ~(green.buzzer);
-            EventToSend = Blue_Buzzer_Pressed_Event;
+
+            event_to_send.event = Buzzer_Pressed_Event;
+            event_to_send.player = &blue;
         }
         else if (exti_pin == red.buzzer)
         {
             EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
                          ~(yellow.buzzer) & ~(green.buzzer);
-            EventToSend = Red_Buzzer_Pressed_Event;
+
+            event_to_send.event = Buzzer_Pressed_Event;
+            event_to_send.player = &red;
         }
         else if (exti_pin == yellow.buzzer)
         {
             EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
                          ~(yellow.buzzer) & ~(green.buzzer);
-            EventToSend = Yellow_Buzzer_Pressed_Event;
+
+            event_to_send.event = Buzzer_Pressed_Event;
+            event_to_send.player = &yellow;
         }
         else if (exti_pin == green.buzzer)
         {
             EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
                          ~(yellow.buzzer) & ~(green.buzzer);
-            EventToSend = Green_Buzzer_Pressed_Event;
+
+            event_to_send.event = Buzzer_Pressed_Event;
+            event_to_send.player = &green;
         }
         else if (exti_pin == OK_SINGLE_BP_Pin)
         {
-            EventToSend = Correct_Answer_Single_Event;
+            event_to_send.event = Correct_Answer_Single_Event;
         }
         else if (exti_pin == OK_DOUBLE_BP_Pin)
         {
-            EventToSend = Correct_Answer_Double_Event;
+            event_to_send.event = Correct_Answer_Double_Event;
         }
         else if (exti_pin == KO_BP_Pin)
         {
-            EventToSend = Wrong_Answer_Event;
+            event_to_send.event = Wrong_Answer_Event;
         }
         else if (exti_pin == START_BP_Pin)
         {
-            EventToSend = Start_Pressed_Event;
+            event_to_send.event = Start_Pressed_Event;
         }
         else if (exti_pin == CANCEL_BP_Pin)
         {
             EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &
                          ~(yellow.buzzer) & ~(green.buzzer);
-            EventToSend = Cancel_Event;
+            event_to_send.event = Cancel_Event;
         }
 
-        xQueueSend(fsm_queue, &EventToSend, 0);
+        xQueueSend(fsm_queue, &event_to_send, 0);
     }
 }

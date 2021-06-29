@@ -33,6 +33,12 @@ typedef struct
     uint16_t score;
 }player_t;
 
+typedef struct
+{
+    eSystemEvent event;
+    player_t* player;
+}fsm_input_t;
+
 // Extern declarations
 extern eSystemState eNextState;
 

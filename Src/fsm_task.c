@@ -75,7 +75,7 @@ eSystemState StartButtonHandler(void)
 eSystemState CancelHandler(uint16_t *players_mask, uint16_t mask_save,
                            player_t *player_ans, cancel_ans_t ans_to_cancel)
 {
-    eSystemEvent EventToSend;
+    fsm_input_t event_to_send;
 
     *players_mask = mask_save;
 
@@ -84,16 +84,10 @@ eSystemState CancelHandler(uint16_t *players_mask, uint16_t mask_save,
     else if (ans_to_cancel == double_ans)
         player_ans->score -= DOUBLE_ANSWER;
 
-    if (player_ans->buzzer == blue.buzzer)
-        EventToSend = Blue_Buzzer_Pressed_Event;
-    else if (player_ans->buzzer == red.buzzer)
-        EventToSend = Red_Buzzer_Pressed_Event;
-    else if (player_ans->buzzer == yellow.buzzer)
-        EventToSend = Yellow_Buzzer_Pressed_Event;
-    else if (player_ans->buzzer == green.buzzer)
-        EventToSend = Green_Buzzer_Pressed_Event;
+    event_to_send.event = Buzzer_Pressed_Event;
+    event_to_send.player = player_ans;
 
-    xQueueSend(fsm_queue, &EventToSend, 0);
+    xQueueSend(fsm_queue, &event_to_send, 0);
 
     return Question_State;
 }
@@ -101,6 +95,7 @@ eSystemState CancelHandler(uint16_t *players_mask, uint16_t mask_save,
 static void _fsm_task (void *pvParameters)
 {
     // Init
+    fsm_input_t event_received;
     eSystemEvent eNewEvent;
     TickType_t time_to_wait = FINITE_BLOCKING_TIME;
     uint16_t players_mask = 0;
@@ -122,7 +117,9 @@ static void _fsm_task (void *pvParameters)
             time_to_wait = FINITE_BLOCKING_TIME; // Set to a finite number to run Idle State without external event
 
         //Read system events
-        xQueueReceive(fsm_queue, &eNewEvent, time_to_wait);
+        xQueueReceive(fsm_queue, &event_received, time_to_wait);
+
+        eNewEvent = event_received.event;
 
         switch(eNextState)
         {
@@ -167,41 +164,22 @@ static void _fsm_task (void *pvParameters)
                         cancel_flag = false;
                     }
                 }
-                else if (eNewEvent == Blue_Buzzer_Pressed_Event)
+                else if (eNewEvent == Buzzer_Pressed_Event)
                 {
-                    players_mask |= blue.buzzer;
-                    player_ans = &blue;
-                    HAL_GPIO_WritePin(blue.front_led.port, blue.front_led.pin, GPIO_PIN_SET);
-                    HAL_GPIO_WritePin(blue.top_panel_led.port, blue.top_panel_led.pin, GPIO_PIN_RESET);
+                    players_mask |= event_received.player->buzzer;
+                    player_ans = event_received.player;
+
+                    HAL_GPIO_WritePin(event_received.player->front_led.port,
+                                      event_received.player->front_led.pin,
+                                      GPIO_PIN_SET);
+
+                    HAL_GPIO_WritePin(event_received.player->top_panel_led.port,
+                                      event_received.player->top_panel_led.pin,
+                                      GPIO_PIN_RESET);
+
                     eNextState = BuzzerPressedHandler();
-                    xQueueOverwrite(buzzer_queue, &blue.buzz_led);
-                }
-                else if (eNewEvent == Red_Buzzer_Pressed_Event)
-                {
-                    players_mask |= red.buzzer;
-                    player_ans = &red;
-                    HAL_GPIO_WritePin(red.front_led.port, red.front_led.pin, GPIO_PIN_SET);
-                    HAL_GPIO_WritePin(red.top_panel_led.port, red.top_panel_led.pin, GPIO_PIN_RESET);
-                    eNextState = BuzzerPressedHandler();
-                    xQueueOverwrite(buzzer_queue, &red.buzz_led);
-                }
-                else if (eNewEvent == Yellow_Buzzer_Pressed_Event)
-                {
-                    players_mask |= yellow.buzzer;
-                    player_ans = &yellow;
-                    HAL_GPIO_WritePin(yellow.front_led.port, yellow.front_led.pin, GPIO_PIN_SET);
-                    HAL_GPIO_WritePin(yellow.top_panel_led.port, yellow.top_panel_led.pin, GPIO_PIN_RESET);
-                    eNextState = BuzzerPressedHandler();
-                    xQueueOverwrite(buzzer_queue, &yellow.buzz_led);
-                }
-                else if (eNewEvent == Green_Buzzer_Pressed_Event)
-                {
-                    players_mask |= green.buzzer;
-                    player_ans = &green;
-                    HAL_GPIO_WritePin(green.front_led.port, green.front_led.pin, GPIO_PIN_SET);
-                    HAL_GPIO_WritePin(green.top_panel_led.port, green.top_panel_led.pin, GPIO_PIN_RESET);
-                    eNextState = BuzzerPressedHandler();
-                    xQueueOverwrite(buzzer_queue, &green.buzz_led);
+
+                    xQueueOverwrite(buzzer_queue, &event_received.player->buzz_led);
                 }
                 break;
 

@@ -155,7 +155,7 @@ int main(void)
   /* USER CODE BEGIN RTOS_QUEUES */
   buzzer_queue = xQueueCreate(BUZZ_ID_QUEUE_LEN, sizeof(led_t));
   exti_queue = xQueueCreate(EXTI_QUEUE_LEN, sizeof(uint16_t));
-  fsm_queue = xQueueCreate(FSM_QUEUE_LEN, sizeof(eSystemEvent));
+  fsm_queue = xQueueCreate(FSM_QUEUE_LEN, sizeof(fsm_input_t));
   /* USER CODE END RTOS_QUEUES */
 
 

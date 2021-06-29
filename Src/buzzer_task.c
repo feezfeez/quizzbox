@@ -17,7 +17,7 @@
 
 static void _buzzer_task(void *pvParameters);
 
-static const eSystemEvent EventToSend = End_Of_Correct_UI_Event;
+static const fsm_input_t event_to_send = {End_Of_Correct_UI_Event, NULL};
 
 void create_buzzer_task(void)
 {
@@ -93,7 +93,7 @@ static void _buzzer_task (void *pvParameters)
 
         if (eNextState == Correct_UI_State && blink_cnt == 0)
         {
-            xQueueSend(fsm_queue, &EventToSend, 0);
+            xQueueSend(fsm_queue, &event_to_send, 0);
         }
     }
 }
