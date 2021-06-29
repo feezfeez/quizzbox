@@ -75,6 +75,10 @@ static void _handler_task (void *pvParameters)
         {
             EventToSend = Wrong_Answer_Event;
         }
+        else if (exti_pin == START_BP_Pin)
+        {
+            EventToSend = Start_Pressed_Event;
+        }
         else if (exti_pin == CANCEL_BP_Pin)
         {
             EXTI->IMR &= ~(blue.buzzer) & ~(red.buzzer) &

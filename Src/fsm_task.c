@@ -155,7 +155,7 @@ static void _fsm_task (void *pvParameters)
             case Question_State:
                 if (eNewEvent == Start_Pressed_Event)
                 {
-                    StartButtonHandler();
+                    eNextState = StartButtonHandler();
                 }
                 else if (eNewEvent == Cancel_Event)
                 {
@@ -198,7 +198,7 @@ static void _fsm_task (void *pvParameters)
             case Pending_Answer_State:
                 if (eNewEvent == Start_Pressed_Event)
                 {
-                    StartButtonHandler();
+                    eNextState = StartButtonHandler();
                 }
                 else if (eNewEvent == Cancel_Event)
                 {
@@ -251,7 +251,7 @@ static void _fsm_task (void *pvParameters)
             case Correct_UI_State:
                 if (eNewEvent == Start_Pressed_Event)
                 {
-                    StartButtonHandler();
+                    eNextState = StartButtonHandler();
                 }
                 if (eNewEvent == End_Of_Correct_UI_Event)
                 {
