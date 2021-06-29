@@ -254,8 +254,13 @@ static void _fsm_task (void *pvParameters)
                     ans_valid = incorrect_ans;
                     cancel_flag = true;
 
-                    HAL_GPIO_WritePin(player_ans->front_led.port, player_ans->front_led.pin, GPIO_PIN_RESET);
-                    HAL_GPIO_WritePin(player_ans->top_panel_led.port, player_ans->top_panel_led.pin, GPIO_PIN_SET);
+                    HAL_GPIO_WritePin(player_ans->front_led.port,
+                                      player_ans->front_led.pin,
+                                      GPIO_PIN_RESET);
+
+                    HAL_GPIO_WritePin(player_ans->top_panel_led.port,
+                                      player_ans->top_panel_led.pin,
+                                      GPIO_PIN_SET);
 
                     eNextState = WrongAnswerHandler(players_mask);
                 }
