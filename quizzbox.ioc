@@ -86,6 +86,7 @@ MxCube.Version=5.5.0
 MxDb.Version=DB.5.0.50
 NVIC.BusFault_IRQn=true\:0\:0\:false\:false\:true\:false\:true\:false
 NVIC.DebugMonitor_IRQn=true\:0\:0\:false\:false\:true\:false\:true\:false
+NVIC.EXTI0_IRQn=true\:5\:0\:false\:false\:true\:true\:true\:true
 NVIC.EXTI15_10_IRQn=true\:5\:0\:false\:false\:true\:true\:true\:true
 NVIC.EXTI1_IRQn=true\:5\:0\:false\:false\:true\:true\:true\:true
 NVIC.EXTI2_TSC_IRQn=true\:5\:0\:false\:false\:true\:true\:true\:true
