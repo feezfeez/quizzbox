@@ -275,7 +275,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, Y_STAT_LED_CMD_Pin|G_STAT_LED_CMD_Pin|B_STAT_LED_CMD_Pin|R_STAT_LED_CMD_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, Y_STAT_LED_CMD_Pin|R_STAT_LED_CMD_Pin|B_STAT_LED_CMD_Pin|G_STAT_LED_CMD_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, R_SS_E_Pin|B_SS_D_Pin|B_SS_C_Pin|B_SS_E_Pin 
@@ -299,8 +299,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, DIG2_CTL_Pin|DIG3_CTL_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : Y_STAT_LED_CMD_Pin G_STAT_LED_CMD_Pin B_STAT_LED_CMD_Pin R_STAT_LED_CMD_Pin */
-  GPIO_InitStruct.Pin = Y_STAT_LED_CMD_Pin|G_STAT_LED_CMD_Pin|B_STAT_LED_CMD_Pin|R_STAT_LED_CMD_Pin;
+  /*Configure GPIO pins : Y_STAT_LED_CMD_Pin R_STAT_LED_CMD_Pin B_STAT_LED_CMD_Pin G_STAT_LED_CMD_Pin */
+  GPIO_InitStruct.Pin = Y_STAT_LED_CMD_Pin|R_STAT_LED_CMD_Pin|B_STAT_LED_CMD_Pin|G_STAT_LED_CMD_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
