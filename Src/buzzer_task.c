@@ -47,7 +47,7 @@ static void _buzzer_task (void *pvParameters)
 
         // Switch off all buzzers LED
         portENTER_CRITICAL();
-        set_reset_all_buzzleds(GPIO_PIN_SET);
+        set_reset_all_buzzleds(GPIO_PIN_RESET);
         portEXIT_CRITICAL();
 
         // Blink until answer is approved (or not)
@@ -72,7 +72,7 @@ static void _buzzer_task (void *pvParameters)
         if (eNextState == Correct_UI_State)
         {
             portENTER_CRITICAL();
-            HAL_GPIO_WritePin(buzzled.port, buzzled.pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(buzzled.port, buzzled.pin, GPIO_PIN_RESET);
             portEXIT_CRITICAL();
 
             for (i=0 ; i<BLINK_TOGGLE_TIMING ; i++)

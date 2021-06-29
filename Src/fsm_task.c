@@ -129,7 +129,7 @@ static void _fsm_task (void *pvParameters)
             case Idle_State:
                 // Switch off all buzzers LED
                 portENTER_CRITICAL();
-                set_reset_all_buzzleds(GPIO_PIN_SET);
+                set_reset_all_buzzleds(GPIO_PIN_RESET);
                 portEXIT_CRITICAL();
 
                 // Keep off for a little while before next game
@@ -137,7 +137,7 @@ static void _fsm_task (void *pvParameters)
 
                 // Switch on all buzzers LED
                 portENTER_CRITICAL();
-                set_reset_all_buzzleds(GPIO_PIN_RESET);
+                set_reset_all_buzzleds(GPIO_PIN_SET);
                 portEXIT_CRITICAL();
 
                 // Blink all buzzers

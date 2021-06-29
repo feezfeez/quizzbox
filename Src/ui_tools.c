@@ -33,24 +33,24 @@ void toggle_all_buzzleds(void)
 void mask_buzzleds(uint32_t players_mask)
 {
     if ((players_mask & BLUE_BUZZ_BP_Pin) == BLUE_BUZZ_BP_Pin)
-        HAL_GPIO_WritePin(BLUE_BUZZ_LED_GPIO_Port, BLUE_BUZZ_LED_Pin, GPIO_PIN_SET);
-    else
         HAL_GPIO_WritePin(BLUE_BUZZ_LED_GPIO_Port, BLUE_BUZZ_LED_Pin, GPIO_PIN_RESET);
+    else
+        HAL_GPIO_WritePin(BLUE_BUZZ_LED_GPIO_Port, BLUE_BUZZ_LED_Pin, GPIO_PIN_SET);
 
     if ((players_mask & RED_BUZZ_BP_Pin) == RED_BUZZ_BP_Pin)
-        HAL_GPIO_WritePin(RED_BUZZ_LED_GPIO_Port, RED_BUZZ_LED_Pin, GPIO_PIN_SET);
-    else
         HAL_GPIO_WritePin(RED_BUZZ_LED_GPIO_Port, RED_BUZZ_LED_Pin, GPIO_PIN_RESET);
+    else
+        HAL_GPIO_WritePin(RED_BUZZ_LED_GPIO_Port, RED_BUZZ_LED_Pin, GPIO_PIN_SET);
 
     if ((players_mask & YELLOW_BUZZ_BP_Pin) == YELLOW_BUZZ_BP_Pin)
-        HAL_GPIO_WritePin(YELLOW_BUZZ_LED_GPIO_Port, YELLOW_BUZZ_LED_Pin, GPIO_PIN_SET);
-    else
         HAL_GPIO_WritePin(YELLOW_BUZZ_LED_GPIO_Port, YELLOW_BUZZ_LED_Pin, GPIO_PIN_RESET);
+    else
+        HAL_GPIO_WritePin(YELLOW_BUZZ_LED_GPIO_Port, YELLOW_BUZZ_LED_Pin, GPIO_PIN_SET);
 
     if ((players_mask & GREEN_BUZZ_BP_Pin) == GREEN_BUZZ_BP_Pin)
-        HAL_GPIO_WritePin(GREEN_BUZZ_LED_GPIO_Port, GREEN_BUZZ_LED_Pin, GPIO_PIN_SET);
-    else
         HAL_GPIO_WritePin(GREEN_BUZZ_LED_GPIO_Port, GREEN_BUZZ_LED_Pin, GPIO_PIN_RESET);
+    else
+        HAL_GPIO_WritePin(GREEN_BUZZ_LED_GPIO_Port, GREEN_BUZZ_LED_Pin, GPIO_PIN_SET);
 
 }
 
