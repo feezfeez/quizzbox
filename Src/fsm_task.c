@@ -230,7 +230,7 @@ static void _fsm_task (void *pvParameters)
                     ans_valid = double_ans;
                     cancel_flag = true;
 
-                    player_ans->score += SINGLE_ANSWER;
+                    player_ans->score += DOUBLE_ANSWER;
                     if (player_ans->score > MAX_SCORE)
                         player_ans->score = MAX_SCORE;
 
