@@ -62,12 +62,11 @@ void create_display_task();
 // Handle declaration
 TaskHandle_t display_task_handle;
 
-typedef struct
+typedef enum
 {
-    uint8_t blue;
-    uint8_t red;
-    uint8_t yellow;
-    uint8_t green;
-}digit_t;
+    UNITS = 0,
+    TENS = 1,
+    HUNDREDS = 2
+}digits_t;
 
 #endif /* __DISPLAY_TASK_H */
