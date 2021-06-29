@@ -60,8 +60,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define Y_STAT_LED_CMD_Pin GPIO_PIN_2
 #define Y_STAT_LED_CMD_GPIO_Port GPIOE
-#define G_STAT_LED_CMD_Pin GPIO_PIN_3
-#define G_STAT_LED_CMD_GPIO_Port GPIOE
+#define R_STAT_LED_CMD_Pin GPIO_PIN_3
+#define R_STAT_LED_CMD_GPIO_Port GPIOE
 #define R_SS_E_Pin GPIO_PIN_13
 #define R_SS_E_GPIO_Port GPIOC
 #define OSC32_IN_Pin GPIO_PIN_14
@@ -184,8 +184,8 @@ void Error_Handler(void);
 #define G_MB_LED_CMD_GPIO_Port GPIOB
 #define B_STAT_LED_CMD_Pin GPIO_PIN_0
 #define B_STAT_LED_CMD_GPIO_Port GPIOE
-#define R_STAT_LED_CMD_Pin GPIO_PIN_1
-#define R_STAT_LED_CMD_GPIO_Port GPIOE
+#define G_STAT_LED_CMD_Pin GPIO_PIN_1
+#define G_STAT_LED_CMD_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
