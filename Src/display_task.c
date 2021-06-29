@@ -46,10 +46,10 @@ static void _display_task (void *pvParameters)
         // Split digits
         if (digit_sel == 0)
         {
-            digit.blue = blue.total_score % 10;
-            digit.red = red.total_score % 10;
-            digit.yellow = yellow.total_score % 10;
-            digit.green = green.total_score % 10;
+            digit.blue = blue.score % 10;
+            digit.red = red.score % 10;
+            digit.yellow = yellow.score % 10;
+            digit.green = green.score % 10;
         }
 /*        else if (digit_sel == 1)
         {
