@@ -73,26 +73,26 @@ static void _display_task (void *pvParameters)
         else if (digit_sel == TENS)
         {
             if (blue.score > 9)
-                B_SS_A_GPIO_Port->BSRR |= blue_sseg_conv[((blue.score / 10) % 10)] << 16;
+                B_SS_A_GPIO_Port->BSRR |= blue_sseg_conv[((blue.score/10) % 10)] << 16;
             if (red.score > 9)
-            R_SS_A_GPIO_Port->BSRR |= red_sseg_conv[((red.score / 10) % 10)] << 16;
+                R_SS_A_GPIO_Port->BSRR |= red_sseg_conv[((red.score/10) % 10)] << 16;
             if (yellow.score > 9)
-            Y_SS_A_GPIO_Port->BSRR |= yellow_sseg_conv[((yellow.score / 10) % 10)] << 16;
+                Y_SS_A_GPIO_Port->BSRR |= yellow_sseg_conv[((yellow.score/10) % 10)] << 16;
             if (green.score > 9)
-            G_SS_A_GPIO_Port->BSRR |= green_sseg_conv[((green.score / 10) % 10)] << 16;
+                G_SS_A_GPIO_Port->BSRR |= green_sseg_conv[((green.score/10) % 10)] << 16;
 
             HAL_GPIO_WritePin(DIG2_CTL_GPIO_Port, DIG2_CTL_Pin, GPIO_PIN_RESET);
         }
         else if (digit_sel == HUNDREDS)
         {
             if (blue.score > 99)
-            B_SS_A_GPIO_Port->BSRR |= blue_sseg_conv[((blue.score / 100) % 10)] << 16;
+                B_SS_A_GPIO_Port->BSRR |= blue_sseg_conv[((blue.score/100) % 10)] << 16;
             if (red.score > 99)
-            R_SS_A_GPIO_Port->BSRR |= red_sseg_conv[((red.score / 100) % 10)] << 16;
+                R_SS_A_GPIO_Port->BSRR |= red_sseg_conv[((red.score/100) % 10)] << 16;
             if (yellow.score > 99)
-            Y_SS_A_GPIO_Port->BSRR |= yellow_sseg_conv[((yellow.score / 100) % 10)] << 16;
+                Y_SS_A_GPIO_Port->BSRR |= yellow_sseg_conv[((yellow.score/100) % 10)] << 16;
             if (green.score > 99)
-            G_SS_A_GPIO_Port->BSRR |= green_sseg_conv[((green.score / 100) % 10)] << 16;
+                G_SS_A_GPIO_Port->BSRR |= green_sseg_conv[((green.score/100) % 10)] << 16;
 
             HAL_GPIO_WritePin(DIG1_CTL_GPIO_Port, DIG1_CTL_Pin, GPIO_PIN_RESET);
         }
