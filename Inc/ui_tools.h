@@ -23,6 +23,7 @@ void set_reset_all_front_leds(GPIO_PinState set_reset);
 void set_reset_all_top_leds(GPIO_PinState set_reset);
 void toggle_all_buzzleds();
 void mask_buzzleds(uint32_t players_mask);
+void mask_top_leds(uint32_t players_mask);
 void blink_all_buzzleds(uint8_t blink_cnt, portTickType period);
 //uint16_t num_to_sevenseg(sevenseg_digit_t digit, uint16_t player);
 

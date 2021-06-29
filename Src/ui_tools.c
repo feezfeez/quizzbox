@@ -67,7 +67,30 @@ void mask_buzzleds(uint32_t players_mask)
         HAL_GPIO_WritePin(GREEN_BUZZ_LED_GPIO_Port, GREEN_BUZZ_LED_Pin, GPIO_PIN_RESET);
     else
         HAL_GPIO_WritePin(GREEN_BUZZ_LED_GPIO_Port, GREEN_BUZZ_LED_Pin, GPIO_PIN_SET);
+}
 
+/* Top LEDs are driven by an open-drain output and are hence logic-low */
+void mask_top_leds(uint32_t players_mask)
+{
+    if ((players_mask & BLUE_BUZZ_BP_Pin) == BLUE_BUZZ_BP_Pin)
+        HAL_GPIO_WritePin(B_STAT_LED_CMD_GPIO_Port, B_STAT_LED_CMD_Pin, GPIO_PIN_SET);
+    else
+        HAL_GPIO_WritePin(B_STAT_LED_CMD_GPIO_Port, B_STAT_LED_CMD_Pin, GPIO_PIN_RESET);
+
+    if ((players_mask & RED_BUZZ_BP_Pin) == RED_BUZZ_BP_Pin)
+        HAL_GPIO_WritePin(R_STAT_LED_CMD_GPIO_Port, R_STAT_LED_CMD_Pin, GPIO_PIN_SET);
+    else
+        HAL_GPIO_WritePin(R_STAT_LED_CMD_GPIO_Port, R_STAT_LED_CMD_Pin, GPIO_PIN_RESET);
+
+    if ((players_mask & YELLOW_BUZZ_BP_Pin) == YELLOW_BUZZ_BP_Pin)
+        HAL_GPIO_WritePin(Y_STAT_LED_CMD_GPIO_Port, Y_STAT_LED_CMD_Pin, GPIO_PIN_SET);
+    else
+        HAL_GPIO_WritePin(Y_STAT_LED_CMD_GPIO_Port, Y_STAT_LED_CMD_Pin, GPIO_PIN_RESET);
+
+    if ((players_mask & GREEN_BUZZ_BP_Pin) == GREEN_BUZZ_BP_Pin)
+        HAL_GPIO_WritePin(G_STAT_LED_CMD_GPIO_Port, G_STAT_LED_CMD_Pin, GPIO_PIN_SET);
+    else
+        HAL_GPIO_WritePin(G_STAT_LED_CMD_GPIO_Port, G_STAT_LED_CMD_Pin, GPIO_PIN_RESET);
 }
 
 void blink_all_buzzleds(uint8_t blink_cnt, portTickType period)

@@ -79,6 +79,8 @@ eSystemState CancelHandler(uint16_t *players_mask, uint16_t mask_save,
 
     *players_mask = mask_save;
 
+    mask_top_leds(mask_save);
+
     if (ans_to_cancel == single_ans)
         player_ans->score -= SINGLE_ANSWER;
     else if (ans_to_cancel == double_ans)
