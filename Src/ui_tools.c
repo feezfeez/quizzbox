@@ -22,6 +22,22 @@ void set_reset_all_buzzleds(GPIO_PinState set_reset)
     HAL_GPIO_WritePin(GREEN_BUZZ_LED_GPIO_Port, GREEN_BUZZ_LED_Pin, set_reset);
 }
 
+void set_reset_all_front_leds(GPIO_PinState set_reset)
+{
+    HAL_GPIO_WritePin(B_MB_LED_CMD_GPIO_Port, B_MB_LED_CMD_Pin, set_reset);
+    HAL_GPIO_WritePin(R_MB_LED_CMD_GPIO_Port, R_MB_LED_CMD_Pin, set_reset);
+    HAL_GPIO_WritePin(Y_MB_LED_CMD_GPIO_Port, Y_MB_LED_CMD_Pin, set_reset);
+    HAL_GPIO_WritePin(G_MB_LED_CMD_GPIO_Port, G_MB_LED_CMD_Pin, set_reset);
+}
+
+void set_reset_all_top_leds(GPIO_PinState set_reset)
+{
+    HAL_GPIO_WritePin(B_STAT_LED_CMD_GPIO_Port, B_STAT_LED_CMD_Pin, set_reset);
+    HAL_GPIO_WritePin(R_STAT_LED_CMD_GPIO_Port, R_STAT_LED_CMD_Pin, set_reset);
+    HAL_GPIO_WritePin(Y_STAT_LED_CMD_GPIO_Port, Y_STAT_LED_CMD_Pin, set_reset);
+    HAL_GPIO_WritePin(G_STAT_LED_CMD_GPIO_Port, G_STAT_LED_CMD_Pin, set_reset);
+}
+
 void toggle_all_buzzleds(void)
 {
     HAL_GPIO_TogglePin(BLUE_BUZZ_LED_GPIO_Port, BLUE_BUZZ_LED_Pin);

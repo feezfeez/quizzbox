@@ -29,7 +29,7 @@ typedef struct
     uint16_t buzzer;
     led_t buzz_led;
     led_t front_led;
-    led_t panel_led;
+    led_t top_panel_led;
     uint16_t score;
 }player_t;
 
