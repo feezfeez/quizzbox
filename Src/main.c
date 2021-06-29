@@ -319,12 +319,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : B1_Pin */
-  GPIO_InitStruct.Pin = B1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
-
   /*Configure GPIO pins : BLUE_BUZZ_BP_Pin RED_BUZZ_BP_Pin YELLOW_BUZZ_BP_Pin GREEN_BUZZ_BP_Pin */
   GPIO_InitStruct.Pin = BLUE_BUZZ_BP_Pin|RED_BUZZ_BP_Pin|YELLOW_BUZZ_BP_Pin|GREEN_BUZZ_BP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
@@ -349,8 +343,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : OK_SINGLE_BP_Pin OK_DOUBLE_BP_Pin KO_BP_Pin CANCEL_BP_Pin */
-  GPIO_InitStruct.Pin = OK_SINGLE_BP_Pin|OK_DOUBLE_BP_Pin|KO_BP_Pin|CANCEL_BP_Pin;
+  /*Configure GPIO pins : START_BP_Pin OK_SINGLE_BP_Pin OK_DOUBLE_BP_Pin KO_BP_Pin 
+                           CANCEL_BP_Pin */
+  GPIO_InitStruct.Pin = START_BP_Pin|OK_SINGLE_BP_Pin|OK_DOUBLE_BP_Pin|KO_BP_Pin 
+                          |CANCEL_BP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -377,9 +373,6 @@ static void MX_GPIO_Init(void)
 
   HAL_NVIC_SetPriority(EXTI3_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(EXTI3_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI4_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
 
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
