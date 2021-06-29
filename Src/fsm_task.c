@@ -182,11 +182,7 @@ static void _fsm_task (void *pvParameters)
                 break;
 
             case Pending_Answer_State:
-                if (eNewEvent == Start_Pressed_Event)
-                {
-                    eNextState = StartButtonHandler();
-                }
-                else if (eNewEvent == Cancel_Event)
+                if (eNewEvent == Cancel_Event)
                 {
                     if (cancel_flag == true)
                     {
