@@ -82,6 +82,7 @@ void Error_Handler(void);
 #define B_SS_G_GPIO_Port GPIOC
 #define BLUE_BUZZ_BP_Pin GPIO_PIN_0
 #define BLUE_BUZZ_BP_GPIO_Port GPIOA
+#define BLUE_BUZZ_BP_EXTI_IRQn EXTI0_IRQn
 #define RED_BUZZ_BP_Pin GPIO_PIN_1
 #define RED_BUZZ_BP_GPIO_Port GPIOA
 #define RED_BUZZ_BP_EXTI_IRQn EXTI1_IRQn
