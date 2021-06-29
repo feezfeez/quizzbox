@@ -73,9 +73,6 @@ static void _buzzer_task (void *pvParameters)
         blink_cnt = CORRECT_TOGGL_CNT;
 
         portENTER_CRITICAL();
-        HAL_GPIO_WritePin(led_group.buzz_led.port,
-                          led_group.buzz_led.pin,
-                          GPIO_PIN_RESET);
         HAL_GPIO_WritePin(led_group.front_led.port,
                           led_group.front_led.pin,
                           GPIO_PIN_RESET);
@@ -83,15 +80,12 @@ static void _buzzer_task (void *pvParameters)
 
         if (eNextState == Correct_UI_State)
         {
-/*            portENTER_CRITICAL();
+            portENTER_CRITICAL();
             HAL_GPIO_WritePin(led_group.buzz_led.port,
                               led_group.buzz_led.pin,
                               GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(led_group.front_led.port,
-                              led_group.front_led.pin,
-                              GPIO_PIN_RESET);
             portEXIT_CRITICAL();
-*/
+
             for (i=0 ; i<BLINK_TOGGLE_TIMING ; i++)
                 vTaskDelay(period);
         }
