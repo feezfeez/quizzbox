@@ -107,7 +107,8 @@ static void _display_task (void *pvParameters)
 
         digit_sel++;
 
-        if (digit_sel > DIGIT_MAX_NUMBER-1)
+//        if (digit_sel >= DIGIT_MAX_NUMBER)
+        if (digit_sel > DIGIT_MAX_NUMBER)
             digit_sel = 0;
 
         // Wait
