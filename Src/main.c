@@ -284,7 +284,7 @@ static void MX_GPIO_Init(void)
                           |R_SS_C_Pin|R_SS_D_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, BLUE_BUZZ_LED_Pin|RED_BUZZ_LED_Pin|DIG1_CTL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, BLUE_BUZZ_LED_Pin|RED_BUZZ_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, YELLOW_BUZZ_LED_Pin|GREEN_BUZZ_LED_Pin|B_MB_LED_CMD_Pin|R_MB_LED_CMD_Pin 
@@ -297,7 +297,7 @@ static void MX_GPIO_Init(void)
                           |G_SS_D_Pin|Y_SS_B_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, DIG2_CTL_Pin|DIG3_CTL_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, DIG1_CTL_Pin|DIG2_CTL_Pin|DIG3_CTL_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : Y_STAT_LED_CMD_Pin R_STAT_LED_CMD_Pin B_STAT_LED_CMD_Pin G_STAT_LED_CMD_Pin */
   GPIO_InitStruct.Pin = Y_STAT_LED_CMD_Pin|R_STAT_LED_CMD_Pin|B_STAT_LED_CMD_Pin|G_STAT_LED_CMD_Pin;
@@ -325,10 +325,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : BLUE_BUZZ_LED_Pin RED_BUZZ_LED_Pin DIG1_CTL_Pin DIG2_CTL_Pin 
-                           DIG3_CTL_Pin */
-  GPIO_InitStruct.Pin = BLUE_BUZZ_LED_Pin|RED_BUZZ_LED_Pin|DIG1_CTL_Pin|DIG2_CTL_Pin 
-                          |DIG3_CTL_Pin;
+  /*Configure GPIO pins : BLUE_BUZZ_LED_Pin RED_BUZZ_LED_Pin */
+  GPIO_InitStruct.Pin = BLUE_BUZZ_LED_Pin|RED_BUZZ_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -363,6 +361,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : DIG1_CTL_Pin DIG2_CTL_Pin DIG3_CTL_Pin */
+  GPIO_InitStruct.Pin = DIG1_CTL_Pin|DIG2_CTL_Pin|DIG3_CTL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 5, 0);
