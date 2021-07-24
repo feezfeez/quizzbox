@@ -46,9 +46,11 @@ static void _display_task (void *pvParameters)
     for(;;)
     {
         // Off digits
+        portENTER_CRITICAL();
         HAL_GPIO_WritePin(DIG1_CTL_GPIO_Port, DIG1_CTL_Pin, GPIO_PIN_SET);
         HAL_GPIO_WritePin(DIG2_CTL_GPIO_Port, DIG2_CTL_Pin, GPIO_PIN_SET);
         HAL_GPIO_WritePin(DIG3_CTL_GPIO_Port, DIG3_CTL_Pin, GPIO_PIN_SET);
+        portEXIT_CRITICAL();
 
         // Reset all the segments
         B_SS_A_GPIO_Port->BSRR |= (B_SS_A_Pin | B_SS_B_Pin | B_SS_C_Pin | B_SS_D_Pin |
@@ -68,7 +70,9 @@ static void _display_task (void *pvParameters)
             Y_SS_A_GPIO_Port->BSRR |= yellow_sseg_conv[(yellow.score % 10)] << 16;
             G_SS_A_GPIO_Port->BSRR |= green_sseg_conv[(green.score % 10)] << 16;
 
+            portENTER_CRITICAL();
             HAL_GPIO_WritePin(DIG3_CTL_GPIO_Port, DIG3_CTL_Pin, GPIO_PIN_RESET);
+            portEXIT_CRITICAL();
         }
         else if (digit_sel == TENS)
         {
@@ -81,7 +85,9 @@ static void _display_task (void *pvParameters)
             if (green.score > 9)
                 G_SS_A_GPIO_Port->BSRR |= green_sseg_conv[((green.score/10) % 10)] << 16;
 
+            portENTER_CRITICAL();
             HAL_GPIO_WritePin(DIG2_CTL_GPIO_Port, DIG2_CTL_Pin, GPIO_PIN_RESET);
+            portEXIT_CRITICAL();
         }
         else if (digit_sel == HUNDREDS)
         {
