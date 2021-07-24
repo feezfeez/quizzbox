@@ -40,7 +40,7 @@ static void _display_task (void *pvParameters)
 
     // Period = 1ms
     portTickType period, last_tick_time;
-    period = (portTickType)(1/portTICK_RATE_MS);
+    period = (portTickType)(5/portTICK_RATE_MS);
     last_tick_time = xTaskGetTickCount();
 
     for(;;)
