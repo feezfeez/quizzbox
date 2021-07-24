@@ -100,7 +100,9 @@ static void _display_task (void *pvParameters)
             if (green.score > 99)
                 G_SS_A_GPIO_Port->BSRR |= green_sseg_conv[((green.score/100) % 10)] << 16;
 
+            portENTER_CRITICAL();
             HAL_GPIO_WritePin(DIG1_CTL_GPIO_Port, DIG1_CTL_Pin, GPIO_PIN_RESET);
+            portEXIT_CRITICAL();
         }
 
         digit_sel++;
